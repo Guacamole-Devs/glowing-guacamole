@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+    $( function() {
+      var d = new Date();
+      StartDate = new Date("March 21, 2019");
+      EndDate = new Date("{{post['deadline']}}");
+      $('#datepicker').datepicker({
+        dateFormat: "yy-mm-dd",
+        minDate: 0,
+        maxDate: EndDate
+      });
+    } );
+    </script>
+  </head>
+  <h1>{% block title %} "{{ post['title'] }}"{% endblock %}</h1> 
+{% endblock %}
+
+{% block content %}
+  <div>
+      <div class="about">by {{ post['username'] }} on {{ post['created'].strftime('%Y-%m-%d') }} at {{ post['created'].strftime('%H:%M') }}</div>
+      <p class="body">{{ post['body'] }}</p>
+      <div class="about">Tags: (tags einfügen) <br> Budget: {{ post['budget'] }}$ <br> Payment: {{ post['payment'] }} <br> Deadline in <span id="timeLeft"></span></div>
+  </div>
+  <hr>
+  <div>
+      <form method="post">
+          <label for="Price">Price</label>
+          <input name="price" id="price" type="number"  value="{{ request.form['price'] }}" min=0 max="{{ post['budget'] }}" required>
+      
+          <label for="delivery">Delivery</label>
+          <input name="delivery" id="datepicker" value="{{ request.form['delivery'] }}" required readonly>
+      
+          <label for="payment">Payment</label>
+          <input name="payment" id="payment" value="{{ request.form['payment'] }}" required>
+      
+          <label for="body">Description</label>
+          <textarea name="body" id="body" required>{{ request.form['body'] }} </textarea>
+          <input type="submit" value="Save">
+        </form>
+  </div>
+{% endblock %}
