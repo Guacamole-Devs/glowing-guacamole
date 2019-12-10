@@ -29,10 +29,10 @@
     <input name="title" id="title" value="{{ request.form['title'] }}" required>
 
     <label for="deadline">Deadline</label>
-    <input name="deadline" id="datepicker" value="{{ request.form['deadline'] }}" required>
+    <input name="deadline" id="datepicker" value="{{ request.form['deadline'] }}" required readonly>
 
     <label for="budget">Budget</label>
-    <input name="budget" id="budget" value="{{ request.form['budget'] }}">
+    <input name="budget" id="budget" type="number"  value="{{ request.form['budget'] }}" min=0 >
 
     <label for="payment">Payment</label>
     <input name="payment" id="payment" value="{{ request.form['payment'] }}" required>
