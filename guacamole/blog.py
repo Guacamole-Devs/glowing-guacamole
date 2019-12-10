@@ -157,3 +157,16 @@ def bid(id):
             db.commit()
             return redirect(url_for("blog.index"))
     return render_template("blog/bid.html", post=post)
+
+
+@bp.route("/me/posts", methods=("GET", "POST"))
+@login_required
+def posts():
+    """Show users posts, most recent first."""
+    db = get_db()
+    posts = db.execute(
+        "SELECT p.id, title, body, created, author_id, username, deadline, budget, payment"
+        " FROM post p JOIN user u ON p.author_id = u.id WHERE author_id=?"
+        " ORDER BY created DESC",(1,)
+    ).fetchall()
+    return render_template("profile/posts.html", posts=posts)
