@@ -1,4 +1,4 @@
-from glowing-guacamole import create_app
+from guacamole import create_app
 
 
 def test_config():

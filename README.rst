@@ -1,4 +1,4 @@
-glowing-guacamole
+guacamole
 ======
 
 The basic blog app built in the Flask `tutorial`_.
@@ -14,7 +14,7 @@ you're reading.** You probably want the latest tagged version, but the
 default Git version is the master branch. ::
 
     # clone the repository
-    $ git clone https://github.com/s0er3n/glowing-guacamole
+    $ git clone https://github.com/s0er3n/guacamole
     $ cd flask
     # checkout the correct version
     $ git tag  # shows the tagged versions
@@ -31,12 +31,12 @@ Or on Windows cmd::
     $ py -3 -m venv venv
     $ venv\Scripts\activate.bat
 
-Install glowing-guacamole::
+Install guacamole::
 
     $ pip install -e .
 
 Or if you are using the master branch, install Flask from source before
-installing glowing-guacamole::
+installing guacamole::
 
     $ pip install -e ../..
     $ pip install -e .
@@ -47,14 +47,14 @@ Run
 
 ::
 
-    $ export FLASK_APP=glowing-guacamole
+    $ export FLASK_APP=guacamole
     $ export FLASK_ENV=development
     $ flask init-db
     $ flask run
 
 Or on Windows cmd::
 
-    > set FLASK_APP=glowing-guacamole
+    > set FLASK_APP=guacamole
     > set FLASK_ENV=development
     > flask init-db
     > flask run

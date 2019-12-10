@@ -7,7 +7,7 @@ with io.open("README.rst", "rt", encoding="utf8") as f:
     readme = f.read()
 
 setup(
-    name="glowing-guacamole",
+    name="guacamole",
     version="1.0.0",
     url="https://flask.palletsprojects.com/tutorial/",
     license="BSD",

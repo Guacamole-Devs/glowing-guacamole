@@ -7,8 +7,8 @@ from flask import request
 from flask import url_for
 from werkzeug.exceptions import abort
 
-from glowing-guacamole.auth import login_required
-from glowing-guacamole.db import get_db
+from guacamole.auth import login_required
+from guacamole.db import get_db
 
 bp = Blueprint("blog", __name__)
 

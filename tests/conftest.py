@@ -3,9 +3,9 @@ import tempfile
 
 import pytest
 
-from glowing-guacamole import create_app
-from glowing-guacamole.db import get_db
-from glowing-guacamole.db import init_db
+from guacamole import create_app
+from guacamole.db import get_db
+from guacamole.db import init_db
 
 # read in SQL for populating test data
 with open(os.path.join(os.path.dirname(__file__), "data.sql"), "rb") as f:
