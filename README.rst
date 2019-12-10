@@ -41,7 +41,6 @@ installing guacamole::
     $ pip install -e ../..
     $ pip install -e .
 
-
 Run
 ---
 
