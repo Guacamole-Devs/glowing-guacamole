@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Posts{% endblock %}</h1>
+  <h1>{% block title %}Buyer Requests{% endblock %}</h1>
   {% if g.user %}
     <a class="action" href="{{ url_for('blog.create') }}">New</a>
   {% endif %}
@@ -10,16 +10,31 @@
 {% block content %}
   {% for post in posts %}
     <article class="post">
+        
       <header>
         <div>
           <h1>{{ post['title'] }}</h1>
-          <div class="about">by {{ post['username'] }} on {{ post['created'].strftime('%Y-%m-%d') }}</div>
+          <div class="about">by {{ post['username'] }} on {{ post['created'].strftime('%Y-%m-%d') }} at {{ post['created'].strftime('%H:%M') }}</div>
         </div>
         {% if g.user['id'] == post['author_id'] %}
           <a class="action" href="{{ url_for('blog.update', id=post['id']) }}">Edit</a>
         {% endif %}
       </header>
       <p class="body">{{ post['body'] }}</p>
+      <div class="about">Tags: (tags einfügen) <br> Budget: {{ post['budget'] }}$ <br> Payment: {{ post['payment'] }} <br> Deadline in <span id="timeLeft"></span></div>
+
+      <script type = "text/javascript" > 
+        var deadline = new Date("{{ post['deadline'] }}");
+        var today =  new Date(Date.now());
+        var modulo = 12 % 9
+        var Difference_In_Minutes = parseInt(deadline.getTime()-today.getTime())/(60*1000);
+        var days = parseInt(Difference_In_Minutes / (60*24));
+        var hours = parseInt((Difference_In_Minutes % (60*24)) / 60);
+        var minutes = parseInt((Difference_In_Minutes % (60*24)) % 60);
+        var timeLeft = days+" days, "+hours+" hours, "+minutes+" minutes";
+        document.write("{{ post['deadline'] }}")
+        document.getElementById('timeLeft').innerHTML = days+" days, "+hours+" hours, "+minutes+" minutes";
+    </script> 
     </article>
     {% if not loop.last %}
       <hr>

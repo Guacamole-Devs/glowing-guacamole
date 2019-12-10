@@ -18,7 +18,7 @@ def index():
     """Show all the posts, most recent first."""
     db = get_db()
     posts = db.execute(
-        "SELECT p.id, title, body, created, author_id, username"
+        "SELECT p.id, title, body, created, author_id, username, deadline, budget, payment"
         " FROM post p JOIN user u ON p.author_id = u.id"
         " ORDER BY created DESC"
     ).fetchall()
@@ -40,7 +40,7 @@ def get_post(id, check_author=True):
     post = (
         get_db()
         .execute(
-            "SELECT p.id, title, body, created, author_id, username"
+            "SELECT p.id, title, body, created, author_id, username, deadline, budget, payment"
             " FROM post p JOIN user u ON p.author_id = u.id"
             " WHERE p.id = ?",
             (id,),
@@ -63,7 +63,11 @@ def create():
     """Create a new post for the current user."""
     if request.method == "POST":
         title = request.form["title"]
+        budget = request.form["budget"]
+        deadline = request.form["deadline"]
+        payment = request.form["payment"]
         body = request.form["body"]
+
         error = None
 
         if not title:
@@ -74,8 +78,8 @@ def create():
         else:
             db = get_db()
             db.execute(
-                "INSERT INTO post (title, body, author_id) VALUES (?, ?, ?)",
-                (title, body, g.user["id"]),
+                "INSERT INTO post (title, deadline, budget, payment, body, author_id) VALUES (?, ?, ?, ?, ?, ?)",
+                (title, deadline, budget, payment, body, g.user["id"]),
             )
             db.commit()
             return redirect(url_for("blog.index"))
@@ -91,7 +95,11 @@ def update(id):
 
     if request.method == "POST":
         title = request.form["title"]
+        budget = request.form["budget"]
+        deadline = request.form["deadline"]
+        payment = request.form["payment"]
         body = request.form["body"]
+
         error = None
 
         if not title:
@@ -102,7 +110,7 @@ def update(id):
         else:
             db = get_db()
             db.execute(
-                "UPDATE post SET title = ?, body = ? WHERE id = ?", (title, body, id)
+                "UPDATE post SET title = ?, deadline = ?, budget = ?, payment = ?, body = ?WHERE id = ?", (title, deadline, budget, payment, body, id)
             )
             db.commit()
             return redirect(url_for("blog.index"))
