@@ -27,7 +27,8 @@ def sendmail(toaddrs,code,username):
     message["Subject"] = f"DEIN CODE: {code}"
     message["Bcc"] = "receiver_email"
     z = url_for("auth.validate", code=code,username=username)
-    x = f"DEIN CODE: {code}\n LINK: {"http://127.0.0.1:5000"+ z}"
+    y = "http://127.0.0.1:5000"+ z
+    x = f"DEIN CODE: {code}\n LINK: {y}"
     message.attach(MIMEText(x, 'plain'))
 
 
