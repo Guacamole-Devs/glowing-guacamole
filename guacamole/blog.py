@@ -131,3 +131,29 @@ def delete(id):
     db.execute("DELETE FROM post WHERE id = ?", (id,))
     db.commit()
     return redirect(url_for("blog.index"))
+
+
+@bp.route("/<int:id>/bid", methods=("GET", "POST"))
+@login_required
+def bid(id):
+    """Bid on a post if the current user is not author."""
+    post = get_post(id, False)
+    if request.method == "POST":
+        price = request.form["price"]
+        delivery = request.form["delivery"]
+        payment = request.form["payment"]
+        body = request.form["body"]
+
+        error = None
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                "INSERT INTO bid (post_id, price, delivery, payment, body, author_id) VALUES (?, ?, ?, ?, ?, ?)",
+                (id, price, delivery, payment, body, g.user["id"]),
+            )
+            db.commit()
+            return redirect(url_for("blog.index"))
+    return render_template("blog/bid.html", post=post)

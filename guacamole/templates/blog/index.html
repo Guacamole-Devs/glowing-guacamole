@@ -10,7 +10,6 @@
 {% block content %}
   {% for post in posts %}
     <article class="post">
-        
       <header>
         <div>
           <h1>{{ post['title'] }}</h1>
@@ -18,6 +17,8 @@
         </div>
         {% if g.user['id'] == post['author_id'] %}
           <a class="action" href="{{ url_for('blog.update', id=post['id']) }}">Edit</a>
+        {% else %}
+          <a class="action" href="{{ url_for('blog.bid', id=post['id']) }}">Bid</a>
         {% endif %}
       </header>
       <p class="body">{{ post['body'] }}</p>
