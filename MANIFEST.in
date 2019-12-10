@@ -1,6 +1,6 @@
 include LICENSE
-include flaskr/schema.sql
-graft flaskr/static
-graft flaskr/templates
+include glowing-guacamole/schema.sql
+graft glowing-guacamole/static
+graft glowing-guacamole/templates
 graft tests
 global-exclude *.pyc
