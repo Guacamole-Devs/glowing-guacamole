@@ -47,4 +47,4 @@ def create_app(test_config=None):
     # the tutorial the blog will be the main index
     app.add_url_rule("/", endpoint="index")
 
-    return app
+    return app 
