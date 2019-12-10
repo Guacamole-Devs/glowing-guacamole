@@ -10,9 +10,9 @@ from flask import session
 from flask import url_for
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
-
-from guacamole.db import get_db
-
+from random import randint
+from guacamole.db import get_db,close_db
+from guacamole.sendemail import sendmail
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
@@ -27,6 +27,8 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+
 
 
 @bp.before_app_request
@@ -53,6 +55,7 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        email = request.form["email"]
         db = get_db()
         error = None
 
@@ -60,24 +63,33 @@ def register():
             error = "Username is required."
         elif not password:
             error = "Password is required."
+        elif not password:
+            error = "Password is required."
         elif (
             db.execute("SELECT id FROM user WHERE username = ?", (username,)).fetchone()
             is not None
         ):
             error = "User {0} is already registered.".format(username)
+        elif (
+            db.execute("SELECT id FROM user WHERE email = ?", (email,)).fetchone()
+            is not None
+        ):
+            error = "email {0} is already registered.".format(email)
 
         if error is None:
             # the name is available, store it in the database and go to
             # the login page
+            code = randint(1000,10000)
             db.execute(
-                "INSERT INTO user (username, password) VALUES (?, ?)",
-                (username, generate_password_hash(password)),
+                "INSERT INTO user (username, email, password, verify_key) VALUES (?, ?, ?, ?)",
+                (username, email, generate_password_hash(password), code)
             )
             db.commit()
+            sendmail(email,code,username)
+            flash("Check your Inbox: Please validate your Account.")
+                        
             return redirect(url_for("auth.login"))
-
         flash(error)
-
     return render_template("auth/register.html")
 
 
@@ -92,11 +104,12 @@ def login():
         user = db.execute(
             "SELECT * FROM user WHERE username = ?", (username,)
         ).fetchone()
-
         if user is None:
             error = "Incorrect username."
         elif not check_password_hash(user["password"], password):
             error = "Incorrect password."
+        elif user["email_verified"] == 0:
+            error = "Email not verified."
 
         if error is None:
             # store the user id in a new session and return to the index
@@ -114,3 +127,32 @@ def logout():
     """Clear the current session, including the stored user id."""
     session.clear()
     return redirect(url_for("index"))
+
+@bp.route("/validate/")
+def validate():
+    username = request.args.get("username")
+    code = request.args.get("code")
+    if username is None or code is None:
+        return render_template("auth/validate.html")
+    else:
+        db = get_db()
+        user = db.execute("SELECT * FROM user WHERE username = ?", (username,)).fetchone()
+        if user["email_verified"] == 1:
+            return redirect(url_for("auth.login"))
+        else:
+            if int(code) == int(user["verify_key"]):
+                db.execute(
+                    "UPDATE user SET email_verified=1 WHERE username=(?)", (username,))
+                db.commit()
+                flash("You can log in now! You are verified!")
+                return redirect(url_for("auth.login"))
+            else:
+                error = "wrong code/link"
+                flash(error)
+                return render_template("auth/validate.html")
+
+
+
+
+
+
