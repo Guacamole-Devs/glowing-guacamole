@@ -14,7 +14,7 @@ you're reading.** You probably want the latest tagged version, but the
 default Git version is the master branch. ::
 
     # clone the repository
-    $ git clone https://github.com/pallets/flask
+    $ git clone https://github.com/s0er3n/glowing-guacamole
     $ cd flask
     # checkout the correct version
     $ git tag  # shows the tagged versions
