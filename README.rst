@@ -54,7 +54,7 @@ Run
 Or on Windows cmd::
 
     > set FLASK_APP=guacamole
-    > set FLASK_ENV=development
+    > $env:FLASK_ENV=development
     > flask init-db
     > flask run
 
