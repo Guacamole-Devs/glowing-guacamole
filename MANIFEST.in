@@ -1,6 +1,0 @@
-include LICENSE
-include guacamole/schema.sql
-graft guacamole/static
-graft guacamole/templates
-graft tests
-global-exclude *.pyc

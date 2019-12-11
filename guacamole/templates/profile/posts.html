@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <head>
+    <script type = "text/javascript" > 
+      function getCountdown(date) {
+        var deadline = new Date(date);
+        var today =  new Date(Date.now());
+        var modulo = 12 % 9
+        var Difference_In_Minutes = parseInt(deadline.getTime()-today.getTime())/(60*1000);
+        var days = parseInt(Difference_In_Minutes / (60*24));
+        var hours = parseInt((Difference_In_Minutes % (60*24)) / 60);
+        var minutes = parseInt((Difference_In_Minutes % (60*24)) % 60);
+        var timeLeft = days+" days, "+hours+" hours, "+minutes+" minutes";
+        return timeLeft
+      }
+    </script> 
+  </head>
+
+  <h1>{% block title %}Your Posts{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('marketplace.create') }}">New Post</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% for post in posts %}
+    <article class="post"> 
+        <header>
+            <div>
+                <h1>{{ post.val()['title'] }}</h1>
+                <div class="about">by {{ g.user['displayName'] }} on {{ utcFromTimestamp(post.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(post.val()['timestamp']).strftime('%H:%M') }}</div>
+            </div>
+            {% if g.user['localId'] == post.val()['author'] %}
+                <a class="action" href="{{ url_for('marketplace.update', id=post.key()) }}">Edit</a>
+            {% else %}
+                <a class="action" href="{{ url_for('marketplace.bid', id=post.key()) }}">Bid</a>
+            {% endif %}
+        </header>
+        <p class="body">{{ post.val()['body'] }}</p>
+        <div class="about">Tags: (tags einfügen) <br> Budget: {{ post.val()['budget'] }}$ <br> Payment: {{ post.val()['payment'] }} <br> Deadline in <span id="timeLeft"></span></div>
+        </article>
+        {% if not loop.last %}
+            <hr>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
