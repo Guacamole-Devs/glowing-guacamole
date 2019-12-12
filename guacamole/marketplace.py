@@ -20,6 +20,7 @@ def index():
     posts = firebase.db.child("marketplace").child("posts").get().each()
     if posts == None:
         posts = []
+    print(posts[0].val()["deadline"])
     from datetime import datetime
     return render_template("marketplace/index.html", posts=posts, utcFromTimestamp=datetime.utcfromtimestamp)
 

@@ -7,18 +7,17 @@
   --navbar-bg-color: #2a6592;
   --navbar-tx-color: #ffffff;
   --navbar-acc-color: #db9833;
-  --navbar-hov-color
 }
 
 
 html {
-    font-family: sans-serif;
-    background: var(--main-bg-color);
+    font-family: 'Roboto', sans-serif;;
+    background-color: var(--main-bg-color);
   }
   
   body {
     margin: 0 auto;
-    background: var(--main-bg-color);
+    background-color: var(--main-bg-color);
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -84,6 +83,7 @@ html {
   .dropdown-content {
     display: none;
     position: absolute;
+    right: 0;
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -129,30 +129,6 @@ html {
     border: 1px solid #377ba8;
   }
   
-  .post > header {
-    display: flex;
-    align-items: flex-end;
-    font-size: 0.85em;
-  }
-  
-  .post > header > div:first-of-type {
-    flex: auto;
-  }
-  
-  .post > header h1 {
-    font-size: 1.5em;
-    margin-bottom: 0;
-  }
-  
-  .post .about {
-    color: slategray;
-    font-style: italic;
-  }
-  
-  .post .body {
-    white-space: pre-line;
-  }
-  
   .content:last-child {
     margin-bottom: 0;
   }
@@ -184,5 +160,83 @@ html {
   input[type=submit] {
     align-self: start;
     min-width: 10em;
+  }
+
+  .card {
+    background-color: lightgray;
+    border-radius: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    max-width: 600px;
+    margin-top: 20px;
+  }
+  .card .header {
+    padding: 0px 20px 5px 20px;
+    margin: 0px;
+    font-family: 'Roboto Mono', monospace;
+    font-style: normal;
+    font-weight: 600;
+  }
+  .card .header .title {
+    font-size: 20px;
+    font-style: oblique;
+  }
+  .card .header .price {
+    font-size: 20px;
+    float:right;
+  }
+  .card .about {
+    padding: 5px 20px 5px 20px;
+    width: 100%
+  }
+  .card .about .author {
+    position: relative;
+    left: 0px;
+  }
+  .card .about .author a {
+      color: hotpink;
+      text-decoration: none;
+  }
+
+  .card .about .author a:hover {
+    text-decoration: underline;
+  }
+
+  .card .about .deadline {
+    position: relative;
+  }
+
+  .card .about .menu {
+    float: center;
+    padding: 5px;
+  }
+
+  .card .body {
+    padding: 5px 20px 5px 20px;
+  }
+  .card .detail {
+    display: inline;
+  }
+  .card .detail .tags {
+    list-style-type: none;
+    margin: 0;
+
+    padding: 5px 20px 5px 20px;
+    overflow: hidden;
+  }
+
+  .card .detail .tags li {
+    display: inline;
+    float: left;
+    padding-right: 5px
+  }
+
+  .card .detail .tags li a {
+    display: block;
+    background-color: blue;
+    text-align: center;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 15px;
   }
 }
