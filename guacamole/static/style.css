@@ -1,21 +1,34 @@
+:root {
+  --main-bg-color: #eee;
+  --body-bg-color: #white;
+
+  --head-tx-color: #7e9a9a;
+
+  --navbar-bg-color: #2a6592;
+  --navbar-tx-color: #ffffff;
+  --navbar-acc-color: #db9833;
+  --navbar-hov-color
+}
+
+
 html {
     font-family: sans-serif;
-    background: #eee;
+    background: var(--main-bg-color);
   }
   
   body {
     margin: 0 auto;
-    background: white;
+    background: var(--main-bg-color);
   }
   
   h1, h2, h3, h4, h5, h6 {
     font-family: serif;
-    color: #377ba8;
+    color: var(--head-tx-color);
     margin: 1rem 0;
   }
   
   a {
-    color: #377ba8;
+    color: #db9833;
   }
   
   hr {
@@ -25,7 +38,7 @@ html {
   
   .navbar {
     overflow: hidden;
-    background-color: #333;
+    background-color: var(--navbar-bg-color);
   }
 
   .navbar h1 {
@@ -41,14 +54,13 @@ html {
   .navbar a {
     float: left;
     font-size: 16px;
-    color: white;
+    color: var(--navbar-tx-color);
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
   }
   
   .dropdown {
-    float: left;
     overflow: hidden;
     float: right;
   }
@@ -65,7 +77,8 @@ html {
   }
   
   .navbar a:hover, .dropdown:hover .dropbtn {
-    background-color: red;
+    background-color: var(--navbar-tx-color);
+    color: var(--navbar-bg-color);
   }
   
   .dropdown-content {
@@ -172,3 +185,4 @@ html {
     align-self: start;
     min-width: 10em;
   }
+}

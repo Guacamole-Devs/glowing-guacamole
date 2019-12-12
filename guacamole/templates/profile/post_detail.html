@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <h1>{% block title %} "{{ post.val()['title'] }}"{% endblock %}</h1> 
+{% endblock %}
+
+{% block content %}
+    <div>
+        <div class="about">Created {{ utcFromTimestamp(post.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(post.val()['timestamp']).strftime('%H:%M') }}</div>
+        <p class="body">{{ post.val()['body'] }}</p>
+        <div class="about">Tags: (tags einfügen) <br> Budget: {{ post.val()['budget'] }}$ <br> Payment: {{ post.val()['payment'] }} <br> Deadline in <span id="timeLeft"></span></div>
+    </div>
+    <hr>
+    <hr>
+    <div>
+        {% for bid in bids %}
+        <article class="post"> 
+            <header>
+                <div>
+                    <h2>{{ bid.val()['title'] }}</h2>
+                    <div class="about">by {{ g.user['displayName'] }} on {{ utcFromTimestamp(bid.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(bid.val()['timestamp']).strftime('%H:%M') }}</div>
+                </div>
+            </header>
+            <p class="body">{{ bid.val()['body'] }}</p>
+            <div class="about">Tags: (tags einfügen) <br> Budget: {{ bid.val()['budget'] }}$ <br> Payment: {{ bid.val()['payment'] }} <br> Deadline in <span id="timeLeft"></span></div>
+            </article>
+            {% if not loop.last %}
+                <hr>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

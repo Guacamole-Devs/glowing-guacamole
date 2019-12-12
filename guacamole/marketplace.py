@@ -18,6 +18,8 @@ bp = Blueprint("marketplace", __name__, url_prefix="/marketplace")
 def index():
     """Show all the posts, most recent first."""
     posts = firebase.db.child("marketplace").child("posts").get().each()
+    if posts == None:
+        posts = []
     from datetime import datetime
     return render_template("marketplace/index.html", posts=posts, utcFromTimestamp=datetime.utcfromtimestamp)
 
@@ -125,6 +127,7 @@ def bid(id):
         d = datetime.utcnow()
         unixtime = calendar.timegm(d.utctimetuple())
         bid = {
+            "post":id,
             "price":price,
             "delivery":delivery,
             "payment":payment,
@@ -132,7 +135,7 @@ def bid(id):
             "author": g.user["localId"],
             "timestamp": unixtime
         }
-        firebase.db.child("marketplace").child("bids").child(id).child("bids").set(bid)
+        firebase.db.child("marketplace").child("bids").push(bid)
         return redirect(url_for("marketplace.index"))
     from datetime import datetime
     return render_template("marketplace/bid.html", post=post, utcFromTimestamp=datetime.utcfromtimestamp)

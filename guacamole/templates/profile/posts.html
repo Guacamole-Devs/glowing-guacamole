@@ -32,6 +32,7 @@
                 <div class="about">by {{ g.user['displayName'] }} on {{ utcFromTimestamp(post.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(post.val()['timestamp']).strftime('%H:%M') }}</div>
             </div>
             {% if g.user['localId'] == post.val()['author'] %}
+                <a class="action" href="{{ url_for('me.post', id=post.key()) }}">View</a><br>
                 <a class="action" href="{{ url_for('marketplace.update', id=post.key()) }}">Edit</a>
             {% else %}
                 <a class="action" href="{{ url_for('marketplace.bid', id=post.key()) }}">Bid</a>

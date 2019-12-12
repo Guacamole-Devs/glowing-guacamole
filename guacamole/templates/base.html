@@ -2,25 +2,26 @@
 <title>{% block title %}{% endblock %} - guacamole</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <div class="navbar">
-    <a href="/martketplace">Marketplace</a>
-    <a href="#news">Blibla</a>
-    <div class="dropdown">
-      <button class="dropbtn">Account 
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
-        <a href="#">Link 1</a>
-        <a href="#">Link 2</a>
-        <a href="#">Link 3</a>
-        {% if g.user %}
-          <a href="/me">{{ g.user['displayName'] }}</a>
+    <a href="/marketplace">Marketplace</a>
+    {% if g.user %}
+      <a href="/me/dashboard">Dashboard</a>
+      <a href="/me/orders">Orders</a>
+      <div class="dropdown">
+        <button class="dropbtn">Account 
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="/me"> Profile </a>
+          <a href="/me/posts"> My Posts </a>
+          <a href="/me/bids"> My Bids </a>
+          <hr>
           <a href="{{ url_for('auth.logout') }}">Log Out</a>
-        {% else %}
-          <a href="{{ url_for('auth.register') }}">Register</a>
-          <a href="{{ url_for('auth.login') }}">Log In</a>
-        {% endif %}
+        </div>
       </div>
-    </div> 
+    {% else %} 
+      <a style="float: right;" href="/auth/register">Sign Up</a>
+      <a style="float: right;" href="/auth/login">Sign In</a>
+    {% endif %}
   </div>
 <section class="content">
   <header>
