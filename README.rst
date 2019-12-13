@@ -1,31 +1,12 @@
 guacamole
 ======
 
-The basic blog app built in the Flask `tutorial`_.
-
-.. _tutorial: https://flask.palletsprojects.com/tutorial/
-
-
 Install
 -------
 
-**Be sure to use the same version of the code as the version of the docs
-you're reading.** You probably want the latest tagged version, but the
-default Git version is the master branch. ::
-
-    # clone the repository
-    $ git clone https://github.com/s0er3n/guacamole
-    $ cd flask
-    # checkout the correct version
-    $ git tag  # shows the tagged versions
-    $ git checkout latest-tag-found-above
-    $ cd examples/tutorial
-
-Create a virtualenv and activate it::
-
-    $ python3 -m venv venv
-    $ . venv/bin/activate
-
+Run Setup Script::
+    > .\setup.ps1
+-> IF Flask is not install (Error) run 
 Or on Windows cmd::
 
     $ py -3 -m venv venv
