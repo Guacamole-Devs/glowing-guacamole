@@ -103,15 +103,12 @@ def delete(id):
     author of the post.
     """
     post = firebase.db.child("marketplace").child("posts").child(id).get()
-    db = get_db()
-    db.execute("DELETE FROM post WHERE id = ?", (id,))
-    db.commit()
     return redirect(url_for("marketplace.index"))
 
 
 @bp.route("/<string:id>/bid", methods=("GET", "POST"))
 @login_required
-def bid(id):
+def bid(id):   
     """Bid on a post if the current user is not author."""
     post = firebase.db.child("marketplace").child("posts").child(id).get()
     if request.method == "POST":

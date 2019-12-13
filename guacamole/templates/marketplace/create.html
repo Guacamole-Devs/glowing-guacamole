@@ -4,20 +4,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
-    $( function() {
-      var d = new Date();
-      StartDate = new Date("March 21, 2019");
-      EndDate = new Date("March 21, 2020");
-      $('#datepicker').datepicker({
-        dateFormat: "yy-mm-dd",
-        minDate: 0,
+      $('.datepicker').datepicker({
+        format: 'mm/dd/yyyy',
+        startDate: '-3d'
       });
-    } );
     </script>
   </head>
   <h1>{% block title %}New Post{% endblock %}</h1>
@@ -25,21 +17,51 @@
 
 {% block content %}
   <form method="post">
-    <label for="title">Title</label>
-    <input name="title" id="title" value="{{ request.form['title'] }}" required>
+    <div class="input-group date" data-provide="datepicker">
+      <input type="text" class="form-control">
+      <div class="input-group-addon">
+          <span class="glyphicon glyphicon-th"></span>
+      </div>
+    </div>
 
-    <label for="deadline">Deadline</label>
-    <input name="deadline" id="datepicker" value="{{ request.form['deadline'] }}" required>
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input name="title" class="form-control" id="title" value="{{ request.form['title'] }}" placeholder="I need a script that does..." required>
+    </div>
+    <div class="form-group">
+      <label for="deadline">Deadline</label>
+      <input class="form-control" name="deadline" id="deadline" value="{{ request.form['deadline'] }}">
+    </div>
 
-    <label for="budget">Budget</label>
-    <input name="budget" id="budget" value="{{ request.form['budget'] }}">
+    <div class="input-append date form_datetime">
+      <input size="16" type="text" value="" readonly>
+      <span class="add-on"><i class="icon-th"></i></span>
+    </div>
+    
+    <div class="row">
+      <div class="col">
+        <label for="budget">Budget</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+          </div>
+          <input type="number" class="form-control" name="budget" id="budget" value="{{ request.form['budget'] }}" placeholder="10" required>
+          <div class="input-group-append">
+            <span class="input-group-text">.00</span>
+          </div>
+          </div>
+      </div>
+      <div class="col">
+        <label for="payment">Forms of Payment</label>
+        <input type="text" class="form-control" name="payment" id="payment" data-role="tagsinput" value="{{ request.form['payment'] }}" placeholder="PayPal, Venmo, etc" required>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="body">Description</label>
+      <textarea class="form-control" rows="5" id="body" placeholder="Describe what you need"> {{ request.form['body'] }} </textarea>
+    </div>
 
-    <label for="payment">Payment</label>
-    <input name="payment" id="payment" value="{{ request.form['payment'] }}" required>
-
-    <label for="body">Body</label>
-    <textarea name="body" id="body">{{ request.form['body'] }}</textarea>
-    <input type="submit" value="Save">
-
+    <button type="submit" class="btn btn-primary">Post</button>
   </form>
 {% endblock %}
