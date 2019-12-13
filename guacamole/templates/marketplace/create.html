@@ -4,38 +4,20 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script>
-      $('.datepicker').datepicker({
-        format: 'mm/dd/yyyy',
-        startDate: '-3d'
-      });
-    </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   </head>
   <h1>{% block title %}New Post{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
   <form method="post">
-    <div class="input-group date" data-provide="datepicker">
-      <input type="text" class="form-control">
-      <div class="input-group-addon">
-          <span class="glyphicon glyphicon-th"></span>
-      </div>
-    </div>
-
     <div class="form-group">
       <label for="title">Title</label>
       <input name="title" class="form-control" id="title" value="{{ request.form['title'] }}" placeholder="I need a script that does..." required>
     </div>
     <div class="form-group">
       <label for="deadline">Deadline</label>
-      <input class="form-control" name="deadline" id="deadline" value="{{ request.form['deadline'] }}">
-    </div>
-
-    <div class="input-append date form_datetime">
-      <input size="16" type="text" value="" readonly>
-      <span class="add-on"><i class="icon-th"></i></span>
+      <input class="form-control" name="deadline" id="deadline" value="{{ request.form['deadline'] }}" required>
     </div>
     
     <div class="row">
@@ -62,6 +44,6 @@
       <textarea class="form-control" rows="5" id="body" placeholder="Describe what you need"> {{ request.form['body'] }} </textarea>
     </div>
 
-    <button type="submit" class="btn btn-primary">Post</button>
+    <div class="text-center"> <button type="submit" class="btn btn-primary">Post</button> </div>
   </form>
 {% endblock %}
