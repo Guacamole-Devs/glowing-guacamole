@@ -73,7 +73,7 @@ def register():
 def login(error = None):
     """Log in a registered user by adding the user id to the session."""
     if request.method == "POST":
-        email = request.form["email#+"]
+        email = request.form["email"]
         password = request.form["password"]
         error = None
         try:
