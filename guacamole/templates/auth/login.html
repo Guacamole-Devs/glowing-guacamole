@@ -3,11 +3,12 @@
 
 
 {% block content %}
-  <form method="post">
-    <label for="email"><b>Email</b></label>
-    <input type="email" placeholder="Enter Email" name="email" id="email" required>
-    <label for="password"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="password" id="password" required>
-    <input type="submit" value="Log In">
-  </form>
+<div class="form-group">
+    <form action="/auth/login" method="post">
+        <input class="form-control" type="email" placeholder="Enter Email" name="email" id="email" required>
+        <input class="form-control" type="password" placeholder="Enter Password" name="password" id="password" required>
+        <input type="submit" class="btn btn-primary" value="Log In">
+        <a class="btn btn-danger" href={{url_for("auth.register")}}>Register</a>
+    </form>
+    </div>
 {% endblock %}

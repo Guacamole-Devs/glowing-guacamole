@@ -44,7 +44,6 @@ def register():
     password for security.
     """
     if request.method == "POST":
-        username = request.form["username"]
         password = request.form["password"]
         email = request.form["email"]
         error = None
