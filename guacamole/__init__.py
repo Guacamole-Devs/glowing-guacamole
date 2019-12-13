@@ -14,9 +14,6 @@ def create_app(test_config=None):
         DATABASE=os.path.join(app.instance_path, "guacamole.sqlite"),
     )
 
-    @app.route("/hello")
-    def hello():
-        return "Hello, World!"
 
 
     # apply the blueprints to the app
