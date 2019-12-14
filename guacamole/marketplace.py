@@ -14,7 +14,7 @@ from guacamole.auth import login_required
 bp = Blueprint("marketplace", __name__, url_prefix="/marketplace")
 
 
-@bp.route("/")
+@bp.route("/", methods=("GET", "POST"))
 def index():
     """Show all the posts, most recent first."""
     posts = firebase.db.child("marketplace").child("posts").get().each()
@@ -23,6 +23,7 @@ def index():
     print(posts[0].val()["deadline"])
     from datetime import datetime
     return render_template("marketplace/index.html", posts=posts, utcFromTimestamp=datetime.utcfromtimestamp)
+        
 
 @bp.route("/create", methods=("GET", "POST"))
 @login_required

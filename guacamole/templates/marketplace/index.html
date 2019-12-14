@@ -47,7 +47,24 @@
             <a class="btn btn-dark" href="{{ url_for('marketplace.update', id=post.key()) }}">Edit</a>
           {% else %}
             <a class="btn btn-primary" href="{{ url_for('marketplace.bid', id=post.key()) }}">Bid</a>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#askFAQ{{ post.key() }}" aria-expanded="false" aria-controls="collapseExample">
+              Ask the Author
+            </button>
+            <div style="margin-top: 10px" class="collapse" id="askFAQ{{ post.key() }}">
+              <div class="card card-body">
+                <form method="post">
+                  <input type="hidden" id="type" value="FAQ" required>
+                  <input type="hidden" id="post" value="{{ post.key() }}" required>
+                  <div class="form-group">
+                    <label for="question">question</label>
+                    <input class="form-control" name="question" id="question" value="{{ request.form['question'] }}" required>
+                  </div>
+                  <div class="text-center"> <button type="submit" class="btn btn-primary">ASK</button> </div>
+              </form>
+              </div>
+            </div>
           {% endif %}
+          
         </span>
         {% endif %}
       </div>
