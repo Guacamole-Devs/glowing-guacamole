@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block header %}
   <head>
+
       <script type = "text/javascript" > 
         function getCountdown(date) {
           var deadline = new Date(date);
@@ -20,26 +21,33 @@
     <a class="action" href="{{ url_for('marketplace.create') }}">New</a>
   {% endif %}
 {% endblock %}
-
 {% block content %}
   {% for post in posts %}
-  <div class="card" style="width: 18rem;">
+  <div class="shadow-sm card" style="width: 100%; margin-top: 10px">
       <div class="card-body">
-        <h5 class="card-title">{{ post.val()['title'] }}</h5>
+        <div class="card-title" style="width: 100%">
+          <div class="float-left"><h5>{{ post.val()['title'] }}</h5></div>
+          <div class="float-right"><i class="fas fa-dollar-sign"> {{post.val()["budget"]}}</i></div>
+        </div>
+        <br>
+        <a href="/user/{{post.val()['author']}}">@{{post.val()['author']}}</a> · {{ utcFromTimestamp(post.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(post.val()['timestamp']).strftime('%H:%M') }}
+        <hr>
         <p class="card-text">{{ post.val()['body'] }}.</p>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item"><a href="/user/1">@{{ g.user['displayName'] }}</a> · {{ utcFromTimestamp(post.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(post.val()['timestamp']).strftime('%H:%M') }} </li>
-        <li class="list-group-item"><script>document.write(getCountdown("{{ post.val()['deadline'] }}"))</script></li>
+        <hr>
+        <li class="list-group-item"><script>document.write(getCountdown("{{ post.val()['deadline'] }}"))</script> until deadline</li>
       </ul>
       <div class="card-body">
           {% if g.user %}
+          <span class="btn-group"></span>
           {% if g.user['localId'] == post.val()['author'] %}
-            <a class="card-link" href="{{ url_for('me.post', id=post.key()) }}">View</a><br>
-            <a class="card-link" href="{{ url_for('marketplace.update', id=post.key()) }}">Edit</a>
+            <a class="btn btn-primary" href="{{ url_for('me.post', id=post.key()) }}">View</a></button>
+            <a class="btn btn-dark" href="{{ url_for('marketplace.update', id=post.key()) }}">Edit</a>
           {% else %}
-            <a class="card-link" href="{{ url_for('marketplace.bid', id=post.key()) }}">Bid</a>
+            <a class="btn btn-primary" href="{{ url_for('marketplace.bid', id=post.key()) }}">Bid</a>
           {% endif %}
+        </span>
         {% endif %}
       </div>
     </div>
