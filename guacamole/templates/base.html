@@ -20,6 +20,10 @@
         
     <nav class="shadow p-3 navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand  mb-0 h1" href="{{url_for('marketplace.index')}}">GUACAMOLE</a>  
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
       {% if g.user %}
         <ul class="navbar-nav mr-auto">
         <li class="nav-item">
@@ -53,6 +57,7 @@
             </form>
           </div>
         </ul>
+      </div>
       {% endif %}
     </nav>
 
