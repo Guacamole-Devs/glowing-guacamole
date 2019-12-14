@@ -23,7 +23,9 @@ def index():
     print(posts[0].val()["deadline"])
     from datetime import datetime
     return render_template("marketplace/index.html", posts=posts, utcFromTimestamp=datetime.utcfromtimestamp)
-        
+
+
+
 
 @bp.route("/create", methods=("GET", "POST"))
 @login_required

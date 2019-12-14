@@ -24,9 +24,9 @@ def profile():
 @login_required
 def posts():
     """Show users posts, most recent first."""
-    myPosts = firebase.db.child("marketplace").child("posts").order_by_child("author").get()
+    myPosts = firebase.db.child("marketplace").child("posts").order_by_child("author").equal_to(g.user["localId"]).get()
     from datetime import datetime
-    return render_template("profile/posts.html", posts=myPosts, utcFromTimestamp=datetime.utcfromtimestamp)
+    return render_template("marketplace/index.html", posts=myPosts, utcFromTimestamp=datetime.utcfromtimestamp)
 
 @bp.route("/post/<string:id>", methods=("GET", "POST"))
 @login_required
