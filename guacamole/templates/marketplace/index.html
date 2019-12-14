@@ -17,11 +17,12 @@
       </script>
   </head>
   <h1>{% block title %}Buyer Requests{% endblock %}</h1>
-  {% if g.user %}
-    <a class="action" href="{{ url_for('marketplace.create') }}">New</a>
-  {% endif %}
+  
 {% endblock %}
 {% block content %}
+{% if g.user %}
+<a class="btn btn-primary action" href="{{ url_for('marketplace.create') }}">New</a>
+{% endif %}
   {% for post in posts %}
   <div class="shadow-sm card" style="width: 100%; margin-top: 10px">
       <div class="card-body">

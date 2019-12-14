@@ -41,8 +41,7 @@
     
     <div class="form-group">
       <label for="body">Description</label>
-      <textarea class="form-control" rows="5" id="body" placeholder="Describe what you need"> {{ request.form['body'] }} </textarea>
-    </div>
+      <textarea class="form-control" rows="5" id="body" placeholder="Describe what you need" name="body" required></textarea>
 
     <div class="text-center"> <button type="submit" class="btn btn-primary">Post</button> </div>
   </form>
