@@ -20,7 +20,14 @@ def index():
     posts = firebase.db.child("marketplace").child("posts").get().each()
     if posts == None:
         posts = []
-    print(posts[0].val()["deadline"])
+    for post in posts:
+        #print(post.val())
+        try:
+            for key in post.val()['faq'].keys():
+                print(post.val()['faq'][key])
+            
+        except:
+            print("none")
     from datetime import datetime
     return render_template("marketplace/index.html", posts=posts, utcFromTimestamp=datetime.utcfromtimestamp)
         
@@ -139,4 +146,33 @@ def bid(id):
     from datetime import datetime
     return render_template("marketplace/bid.html", post=post, utcFromTimestamp=datetime.utcfromtimestamp)
 
+@bp.route("/<string:id>/bid", methods=("GET", "POST"))
+def ask():
+    """Bid on a post if the current user is not author."""
+    post = firebase.db.child("marketplace").child("posts").child(id).get()
+    if request.method == "POST":
+        price = request.form["price"]
+        delivery = request.form["delivery"]
+        payment = request.form["payment"]
+        body = request.form["body"]
 
+        error = None
+
+        from datetime import datetime
+        import calendar
+
+        d = datetime.utcnow()
+        unixtime = calendar.timegm(d.utctimetuple())
+        bid = {
+            "post":id,
+            "price":price,
+            "delivery":delivery,
+            "payment":payment,
+            "body": body,
+            "author": g.user["localId"],
+            "timestamp": unixtime
+        }
+        firebase.db.child("marketplace").child("bids").push(bid)
+        return redirect(url_for("marketplace.index"))
+    from datetime import datetime
+    return render_template("marketplace/bid.html", post=post, utcFromTimestamp=datetime.utcfromtimestamp)
