@@ -55,9 +55,6 @@ def register():
         if error is None:
             # store the user id in a new session and return to the index
             firebase.auth.send_email_verification(user["idToken"])
-            user = firebase.auth.current_user
-            profile = { "username": username }
-            firebase.db.child("users").child(user["localId"]).set(profile)
             session.clear()
             session["user_id"] = user["localId"]
             session["user_token"] = user["idToken"]
