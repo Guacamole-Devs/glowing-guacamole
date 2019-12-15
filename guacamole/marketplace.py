@@ -20,14 +20,7 @@ def index():
     posts = firebase.db.child("marketplace").child("posts").get().each()
     if posts == None:
         posts = []
-    for post in posts:
-        #print(post.val())
-        try:
-            for key in post.val()['faq'].keys():
-                print(post.val()['faq'][key])
-            
-        except:
-            print("none")
+
     from datetime import datetime
     return render_template("marketplace/index.html", posts=posts, utcFromTimestamp=datetime.utcfromtimestamp)
 
