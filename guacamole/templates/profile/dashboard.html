@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <head>
+       <title>{% block title %} Dashboard {% endblock %}</title>
+    </head>
+
+    <nav id="dashboard-nav" class="shadow p-3 navbar navbar-light bg-light rounded" style="margin-bottom: 20px; margin-top: 20px">
+        <a class="navbar-brand" href="#">Dashboard</a>
+        <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a class="nav-link" href="#inbox">Inbox</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#posts">Posts</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#bids">Bids</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+            <div class="dropdown-menu">
+            <a class="dropdown-item" href="#one">one</a>
+            <a class="dropdown-item" href="#two">two</a>
+            <div role="separator" class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#three">three</a>
+            </div>
+        </li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block secLeft %}
+<h4> Inbox </h4>
+{% endblock %}
+
+{% block secContent %}
+<div data-spy="scroll" data-target="#dashboard-nav" data-offset="0">
+    <h4 id="inbox">INBOX</h4>
+    <p>...</p>
+    <h4 id="posts">POSTS</h4>
+    <p>...</p>
+    <h4 id="bids">BIDS</h4>
+    <p>...</p>
+</div>
+{% endblock %}

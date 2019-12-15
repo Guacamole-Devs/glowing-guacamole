@@ -3,6 +3,7 @@ venv/
 __pycache__/
 instance/
 .cache/
+.vscode/
 .pytest_cache/
 .coverage
 htmlcov/
@@ -12,3 +13,4 @@ build/
 .idea/
 *.swp
 *~
+cred.txt

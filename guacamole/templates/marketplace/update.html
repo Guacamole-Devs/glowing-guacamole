@@ -20,29 +20,36 @@
     } );
     </script>
   </head>
-  <h1>{% block title %}Edit "{{ post['title'] }}"{% endblock %}</h1>
+  <h1>{% block title %}Edit "{{ post.val()['title'] }}"{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
   <form method="post">
     <label for="title">Title</label>
-    <input name="title" id="title" value="{{ request.form['title'] or post['title'] }}" required>
+    <input name="title" id="title" value="{{ request.form['title'] or post.val()['title'] }}" required>
 
     <label for="deadline">Deadline</label>
+<<<<<<< HEAD:guacamole/templates/blog/update.html
     <input name="deadline" id="datepicker" value="{{ request.form['deadline'] or post['deadline'] }}" required readonly>
 
     <label for="budget">Budget</label>
     <input name="budget" id="budget" type="number" value="{{ request.form['budget'] or post['budget'] }}" min=0>
+=======
+    <input name="deadline" id="datepicker" value="{{ request.form['deadline'] or post.val()['deadline'] }}" required>
+
+    <label for="budget">Budget</label>
+    <input name="budget" id="budget" value="{{ request.form['budget'] or post.val()['budget'] }}">
+>>>>>>> Firebase:guacamole/templates/marketplace/update.html
 
     <label for="payment">Payment</label>
-    <input name="payment" id="payment" value="{{ request.form['payment'] or post['payment'] }}" required>
+    <input name="payment" id="payment" value="{{ request.form['payment'] or post.val()['payment'] }}" required>
 
     <label for="body">Body</label>
     <textarea name="body" id="body">{{ request.form['body'] or post['body'] }}</textarea>
     <input type="submit" value="Save">
   </form>
   <hr>
-  <form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
+  <form action="{{ url_for('marketplace.delete', id=post.key()) }}" method="post">
     <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
   </form>
 {% endblock %}
