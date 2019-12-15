@@ -58,7 +58,7 @@ def register():
             session.clear()
             session["user_id"] = user["localId"]
             session["user_token"] = user["idToken"]
-            flash("Please verify")
+            flash("Please verify your Email Adress")
             return redirect(url_for("marketplace.index"))
 
         flash(error)

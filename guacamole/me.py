@@ -45,3 +45,8 @@ def bids():
     myBids = firebase.db.child("marketplace").child("bids").order_by_child("author").equal_to(g.user["localId"]).get()
     from datetime import datetime
     return render_template("profile/bids.html", bids=myBids, utcFromTimestamp=datetime.utcfromtimestamp)
+
+@bp.route("/dashboard", methods=("GET", "POST"))
+@login_required
+def dashboard():
+    return render_template("profile/dashboard.html")
