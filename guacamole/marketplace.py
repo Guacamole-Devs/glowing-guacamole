@@ -16,13 +16,22 @@ bp = Blueprint("marketplace", __name__, url_prefix="/marketplace")
 
 @bp.route("/", methods=("GET", "POST"))
 def index():
+    from datetime import datetime
     """Show all the posts, most recent first."""
-    posts = firebase.db.child("marketplace").child("posts").get().each()
+    posts = firebase.db.child("marketplace").child("posts").order_by_child("timestamp").get().each()
     if posts == None:
         posts = []
-
-    from datetime import datetime
-    return render_template("marketplace/index.html", posts=posts, utcFromTimestamp=datetime.utcfromtimestamp)
+    posts.reverse()
+    filteredPosts = []
+    for post in posts:
+        deadline = post.val()['deadline']
+        deadlineDate = datetime.strptime(deadline, "%Y-%m-%d")
+        print(datetime.utcnow())
+        print(deadlineDate)
+        if not datetime.utcnow() > deadlineDate:
+            filteredPosts.append(post)
+        
+    return render_template("marketplace/index.html", posts=filteredPosts, utcFromTimestamp=datetime.utcfromtimestamp)
 
 
 
