@@ -5,13 +5,13 @@
         <meta charset="utf-8"> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
-    <h1>{% block title %} "{{ post.v,al()['title'] }}"{% endblock %}</h1> 
+    <h1>{% block title %} "{{ post.val()['title'] }}"{% endblock %}</h1> 
     <div class="shadow-sm card" style="width: 100%; margin-top: 10px">
         <div class="card-body">
             
             <span class="btn-group">
-                <a class="btn btn-primary" href="{{ url_for('marketplace.bid', id=post.key()) }}">Accept</a>
-                <a class="btn btn-dark" href="{{ url_for('marketplace.bid', id=post.key()) }}">Message</a>
+                <a class="btn btn-success" href="{{ url_for('marketplace.bid', id=post.key()) }}">Accept</a>
+                <a class="btn btn-danger" href="{{ url_for('marketplace.bid', id=post.key()) }}">Message</a>
             </span>
         </div>
     </div>
@@ -53,11 +53,13 @@
             <p class="card-text">{{ bid.val()['body'] }}</p>
         </div>
         <div class="card-body">
+            <a class="btn btn-primary" href="">Message</a>
             <span class="btn-group">
-            <a class="btn btn-primary" href="{{ url_for('marketplace.bid', id=post.key()) }}">Accept</a>
-            <a class="btn btn-dark" href="{{ url_for('marketplace.bid', id=post.key()) }}">Message</a>
+                <a class="btn btn-success" href="">Accept</a>
+                <a class="btn btn-danger" href="">Decline</a>
             </span>
         </div>
+        
     </div>
     
 {% endfor %}

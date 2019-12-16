@@ -16,13 +16,17 @@
   </head>
 
   <body>
-
-        
-    <nav class="shadow p-3 navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand  mb-0 h1" href="{{url_for('marketplace.index')}}">GUACAMOLE</a>  
+    <nav class="shadow p-3 navbar navbar-expand-lg navbar-light bg-light" style="max-height: 60px"> 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+          <!-- <img src="{{url_for('static', filename='assets/logo.svg')}}" width="80" height="30" alt=""> -->
+          GUACAMOLE
+        </a>
+        
+      </nav>
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
       {% if g.user %}
         <ul class="navbar-nav mr-auto">
@@ -47,16 +51,34 @@
       {% else %}
         <ul class="navbar-nav mr-auto">     
         </ul>
-        <ul class="navbar-nav">
-          <div class="form-inline">
-            <form action="/auth/login" method="post">
-              <input class="form-control" type="email" placeholder="Enter Email" name="email" id="email" required>
-              <input class="form-control" type="password" placeholder="Enter Password" name="password" id="password" required>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Login</button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <form action="/auth/login" method="post" class="px-4 py-3">
+              <div class="form-group">
+                <label for="email">Email address</label>
+                <input class="form-control" type="email" placeholder="email@example.com" id="email" name="email" id="email" required>
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input class="form-control" type="password" placeholder="Enter Password" id="password" name="password" id="password" required>
+              </div>
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                <label class="form-check-label" for="dropdownCheck">
+                  Remember me
+                </label>
+              </div>
               <input type="submit" class="btn btn-primary" value="Log In">
-              <a class="btn btn-danger" href="{{ url_for('auth.register') }}">Register</a>
             </form>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/auth/forgot">Did you forget something?</a>
           </div>
-        </ul>
+        </div>
+        <button style="margin-left: 10px" type="button" class="btn btn-secondary" href="{{ url_for('auth.register') }}">Register</button>
+        
+        
+        
       </div>
       {% endif %}
     </nav>
@@ -91,3 +113,58 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   </body>
 </html>
+
+
+{% block footer %}
+<!-- Footer -->
+<footer class="page-footer font-small blue pt-4">
+
+  <!-- Footer Links -->
+  <div class="container-fluid text-center text-md-left">
+
+    <!-- Grid row -->
+    <div class="row">
+
+      <!-- Grid column -->
+      <div class="col-md-6 mt-md-0 mt-3">
+
+        <!-- Content -->
+        <h5 class="text-uppercase">Footer Content</h5>
+        <p>Here you can use rows and columns to organize your footer content.</p>
+
+      </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none pb-3">
+
+      <!-- Grid column -->
+      <div class="col-md-3 mb-md-0 mb-3">
+
+
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-3 mb-md-0 mb-3">
+
+        <!-- Links -->
+        <h5 class="text-uppercase">Links</h5>
+
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </div>
+  <!-- Footer Links -->
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2018 Copyright:
+    <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+{% endblock %}

@@ -94,3 +94,12 @@ def logout():
     """Clear the current session, including the stored user id."""
     session.clear()
     return redirect(url_for("marketplace.index"))
+
+@bp.route("/forgot", methods=("GET", "POST"))
+def forgot():
+    if request.method == "POST":
+        email = request.form.get("email")
+        firebase.auth.send_password_reset_email(email)
+        flash("Check your Email for Instruction on how to reset your password.")
+        return render_template("auth/login.html")
+    return render_template("auth/forgot.html")

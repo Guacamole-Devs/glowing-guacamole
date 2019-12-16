@@ -26,15 +26,37 @@
         }
       </script>
   </head>
-  <h1>{% block title %}Buyer Requests{% endblock %}</h1>
-  
+  <nav style="margin-bottom: 20px" class="navbar navbar-dark bg-dark justify-content-between rounded-bottom">
+    <a class="navbar-brand">Marketplace</a>
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    {% if g.user %}
+      <a class="btn btn-primary" href="{{ url_for('marketplace.create') }}">New</a>
+    {% endif %}
+  </nav>  
+{% endblock %}
+
+{% block title %}Marketplace{% endblock %}
+
+{% block left %}
+<div class="shadow-sm card" style="width: 100%;">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <form class="form-inline" style="width: 100%;">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" style="width: 70%;">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </li>
+    <li class="list-group-item">Dapibus ac facilisis in</li>
+    <li class="list-group-item">Vestibulum at eros</li>
+  </ul>
+</div>
 {% endblock %}
 {% block content %}
-{% if g.user %}
-<a class="btn btn-primary action" href="{{ url_for('marketplace.create') }}">New</a>
-{% endif %}
   {% for post in posts %}
-  <div class="shadow-sm card" style="width: 100%; margin-top: 10px">
+  <div class="shadow-sm card" style="width: 100%; margin-bottom: 10px">
       <div class="card-body">
         <div class="row card-title" style="width: 100%">
           <div class="col-sm-9"> <h5>{{ post.val()['title'] }}</h5></div>
@@ -58,11 +80,6 @@
       <div class="card-body">
           {% if g.user %}
           <span class="btn-group"></span>
-          {% if g.user['localId'] == post.val()['author'] %}
-            <a class="btn btn-primary" href="{{ url_for('me.post', id=post.key()) }}">View</a></button>
-            <a class="btn btn-dark" href="{{ url_for('marketplace.update', id=post.key()) }}">Edit</a>
-          {% else %}
-            <a class="btn btn-primary" href="{{ url_for('marketplace.bid', id=post.key()) }}">Bid</a>
             <button class="btn btn-primary shadow-none" type="button" data-toggle="collapse" data-target="#askFAQ{{ post.key() }}" aria-expanded="false" aria-controls="collapseExample">
               FAQ
             </button>
@@ -102,8 +119,12 @@
                   </div>
               </div>
             </div>
+          {% if g.user['localId'] == post.val()['author'] %}
+            <a class="btn btn-primary" href="{{ url_for('me.post', id=post.key()) }}">View</a></button>
+            <a class="btn btn-dark" href="{{ url_for('marketplace.update', id=post.key()) }}">Edit</a>
+          {% else %}
+            <a class="btn btn-primary" href="{{ url_for('marketplace.bid', id=post.key()) }}">Bid</a>
           {% endif %}
-          
         </span>
         {% endif %}
       </div>
