@@ -1,55 +1,33 @@
 {% extends 'base.html' %}
-{% block header %}
-  <head>
-      <script type = "text/javascript" > 
-        function getCountdown(date) {
-          var deadline = new Date(date);
-          var today =  new Date(Date.now());
-          var modulo = 12 % 9
-          var Difference_In_Minutes = parseInt(deadline.getTime()-today.getTime())/(60*1000);
-          var days = parseInt(Difference_In_Minutes / (60*24));
-          var hours = parseInt((Difference_In_Minutes % (60*24)) / 60);
-          var minutes = parseInt((Difference_In_Minutes % (60*24)) % 60);
-          var timeLeft = "";
-          if ((days != 0 || days < 0) != true) {
-            timeLeft += days+" days "
-          }
-          if ((hours == 0 || hours < 0) != true) {
-            timeLeft += ", "+hours+" hours "+minutes+" minutes";
-          }
-          if ((minutes != 0 || minutes < 0) != true) {
-            timeLeft += ", "+minutes+" minutes";
-          }
-          
-          
-          return timeLeft
-        }
-      </script>
-  </head>
-  <nav style="margin-bottom: 20px" class="navbar navbar-dark bg-dark justify-content-between rounded-bottom">
-    <a class="navbar-brand">Marketplace</a>
-    <form class="form-inline">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-    {% if g.user %}
-      <a class="btn btn-primary" href="{{ url_for('marketplace.create') }}">New</a>
-    {% endif %}
-  </nav>  
-{% endblock %}
 
 {% block title %}Marketplace{% endblock %}
+
+{% block header %}
+<h2>Marketplace</h2>
+  <!-- SEARCH BAR -->
+  <!---->
+{% endblock %}
+
+
 
 {% block left %}
 <div class="shadow-sm card" style="width: 100%;">
   <ul class="list-group list-group-flush">
     <li class="list-group-item">
-      <form class="form-inline" style="width: 100%;">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" style="width: 70%;">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
+        <div class="form-group">
+            <label for="sortingOptions">Sort by</label>
+            <select class="browser-default custom-select" id="sortingOptions">
+              <option>most recent</option>
+              <option>deadline</option>
+              <option>reward</option>
+            </select>
+          </div>
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="showInactiveSwitch" >
+          <label class="custom-control-label" for="showInactiveSwitch">Show inactive posts</label>
+        </div>
+
     </li>
-    <li class="list-group-item">Dapibus ac facilisis in</li>
     <li class="list-group-item"><a href="#post-Lw3w5okTivrfPkFnN67"> jump </a></li>
   </ul>
 </div>
