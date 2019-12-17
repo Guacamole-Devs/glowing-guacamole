@@ -99,7 +99,19 @@ def logout():
 def forgot():
     if request.method == "POST":
         email = request.form.get("email")
-        firebase.auth.send_password_reset_email(email)
-        flash("Check your Email for Instruction on how to reset your password.")
-        return render_template("auth/login.html")
+        
+        
+        error = None
+        try:
+            firebase.auth.send_password_reset_email(email)
+        except requests.exceptions.HTTPError as e:
+            error_json = e.args[1]
+            error = json.loads(error_json)['error']["message"]
+
+        if error is None:
+            # store the user id in a new session and return to the index
+            flash("Check your Email for Instruction on how to reset your password.")
+            return redirect(url_for("auth.login"))    
+        else:
+            flash(error)
     return render_template("auth/forgot.html")

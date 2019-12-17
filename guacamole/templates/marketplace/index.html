@@ -10,12 +10,12 @@
           var days = parseInt(Difference_In_Minutes / (60*24));
           var hours = parseInt((Difference_In_Minutes % (60*24)) / 60);
           var minutes = parseInt((Difference_In_Minutes % (60*24)) % 60);
-          var timeLeft = 0;
+          var timeLeft = "";
           if ((days != 0 || days < 0) != true) {
-            timeLeft += days+" days"
+            timeLeft += days+" days "
           }
           if ((hours == 0 || hours < 0) != true) {
-            timeLeft += ", "+hours+" hours"+minutes+" minutes";
+            timeLeft += ", "+hours+" hours "+minutes+" minutes";
           }
           if ((minutes != 0 || minutes < 0) != true) {
             timeLeft += ", "+minutes+" minutes";
