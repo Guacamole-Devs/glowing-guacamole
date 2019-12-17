@@ -50,13 +50,13 @@
       </form>
     </li>
     <li class="list-group-item">Dapibus ac facilisis in</li>
-    <li class="list-group-item">Vestibulum at eros</li>
+    <li class="list-group-item"><a href="#post-Lw3w5okTivrfPkFnN67"> jump </a></li>
   </ul>
 </div>
 {% endblock %}
 {% block content %}
   {% for post in posts %}
-  <div class="shadow-sm card" style="width: 100%; margin-bottom: 10px">
+  <div class="shadow-sm card" style="width: 100%; margin-bottom: 10px" id="post{{ post.key() }}">
       <div class="card-body">
         <div class="row card-title" style="width: 100%">
           <div class="col-sm-9"> <h5>{{ post.val()['title'] }}</h5></div>
@@ -113,7 +113,7 @@
                       </li>
                       {% endif %}
                       <li class="list-group-item">
-                        <a style="width: 100%" class="btn btn-dark" href="{{ url_for('marketplace.ask', id=post.key()) }}">Ask a question</a>
+                        <a style="width: 100%" class="btn btn-dark" href="{{ url_for('marketplace.askFAQ', id=post.key()) }}">Ask a question</a>
                       </li>
                     </ul>
                   </div>

@@ -26,8 +26,6 @@ def index():
     for post in posts:
         deadline = post.val()['deadline']
         deadlineDate = datetime.strptime(deadline, "%Y-%m-%d")
-        print(datetime.utcnow())
-        print(deadlineDate)
         if not datetime.utcnow() > deadlineDate:
             filteredPosts.append(post)
         
@@ -150,16 +148,11 @@ def bid(id):
     from datetime import datetime
     return render_template("marketplace/bid.html", post=post, utcFromTimestamp=datetime.utcfromtimestamp)
 
-@bp.route("/<string:id>/bid", methods=("GET", "POST"))
-def ask():
-    """Bid on a post if the current user is not author."""
+@bp.route("/<string:id>/askFAQ", methods=("GET", "POST"))
+def askFAQ(id):
     post = firebase.db.child("marketplace").child("posts").child(id).get()
     if request.method == "POST":
-        price = request.form["price"]
-        delivery = request.form["delivery"]
-        payment = request.form["payment"]
-        body = request.form["body"]
-
+        question = request.get("price")
         error = None
 
         from datetime import datetime
@@ -167,16 +160,19 @@ def ask():
 
         d = datetime.utcnow()
         unixtime = calendar.timegm(d.utctimetuple())
-        bid = {
-            "post":id,
-            "price":price,
-            "delivery":delivery,
-            "payment":payment,
-            "body": body,
+        faq = {
+            "post": id,
+            "question": question,
             "author": g.user["localId"],
             "timestamp": unixtime
         }
-        firebase.db.child("marketplace").child("bids").push(bid)
+        firebase.db.child("marketplace").child("posts").child(id).child("faq").push(faq)
+        followed_post = {
+            "id" : id 
+        }
+        firebase.db.child("users").child("followed").push(post)
+        flush("FAQ Submitted")
         return redirect(url_for("marketplace.index"))
     from datetime import datetime
-    return render_template("marketplace/bid.html", post=post, utcFromTimestamp=datetime.utcfromtimestamp)
+    return redirect(url_for("marketplace.index"))
+
