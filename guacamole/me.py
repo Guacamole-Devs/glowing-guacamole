@@ -18,7 +18,7 @@ bp = Blueprint("me", __name__, url_prefix="/me")
 @bp.route("", methods=("GET", "POST"))
 @login_required
 def profile():
-    return render_template("profile/profile.html")
+    return render_template("profile/profile.html", user=g.user)
 
 @bp.route("/posts", methods=("GET", "POST"))
 @login_required

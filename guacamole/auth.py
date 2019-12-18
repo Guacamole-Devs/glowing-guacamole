@@ -46,7 +46,7 @@ def register():
     if request.method == "POST":
         password = request.form["password"]
         email = request.form["email"]
-        username = "noahkamara"
+        username = request.form["username"]
         error = None
         try:
             response = firebase.auth.create_user_with_email_and_password(email, password)
@@ -82,6 +82,10 @@ def login(error = None):
         if error is None:
             # store the user id in a new session and return to the index
             user = firebase.User(response)
+            user.printUser()
+            if user.isEmailVerified == False:
+                flash("Verify your Email adress")
+                return redirect(url_for("auth.login"))
             session.clear()
             session["user_id"] = user.localId
             session["user_token"] = user.idToken
