@@ -42,7 +42,7 @@ def post(id):
 @login_required
 def bids():
     """Show users posts, most recent first."""
-    myBids = firebase.db.child("marketplace").child("bids").order_by_child("author").equal_to(g.user["localId"]).get()
+    myBids = firebase.db.child("marketplace").child("bids").order_by_child("author").equal_to(g.user.localId).get()
     from datetime import datetime
     return render_template("profile/bids.html", bids=myBids, utcFromTimestamp=datetime.utcfromtimestamp)
 
