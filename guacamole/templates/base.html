@@ -83,7 +83,7 @@
           </ul>
           {% if g.user %}
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fas fa-user"></i> Account
+                  <i class="fas fa-user"></i> {% if g.user.username %} {{ g.user.username }} {% else %} Account {% endif %}
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="/me"> Profile </a>
@@ -116,7 +116,7 @@
 
             <div class="d-lg-none d-xl-none">
               <div class="navbar-form">
-                <button type="button" class="btn btn-primary" href="{{ url_for('auth.login') }}">Login</button>
+                <a  class="btn btn-primary" href="{{ url_for('auth.login') }}">Login</a>
                 <a class="btn btn-secondary" href="{{ url_for('auth.register') }}">Register</a>
               </div>
             </div>
