@@ -63,7 +63,8 @@ def create():
                 "budget":budget,
                 "payment":payment,
                 "body": body,
-                "author": g.user["localId"],
+                "author": g.user.localId,
+                "author_user": g.user.username,
                 "timestamp": unixtime
             }
             firebase.db.child("marketplace").child("posts").push(post)
@@ -171,8 +172,11 @@ def askFAQ(id):
             "id" : id 
         }
         firebase.db.child("users").child("followed").push(post)
-        flush("FAQ Submitted")
+        flash("FAQ Submitted")
         return redirect(url_for("marketplace.index"))
     from datetime import datetime
     return redirect(url_for("marketplace.index"))
 
+@bp.route("/user/<string:id>", methods=("GET", "POST"))
+def userProfile(id):
+    return "Hello"

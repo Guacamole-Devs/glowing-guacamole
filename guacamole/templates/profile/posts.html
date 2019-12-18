@@ -1,136 +1,118 @@
 {% extends 'base.html' %}
 
+{% block title %}Marketplace{% endblock %}
+
 {% block header %}
-  <head>
-<<<<<<< HEAD
-    <script type = "text/javascript" > 
-      function getCountdown(date) {
-        var deadline = new Date(date);
-        var today =  new Date(Date.now());
-        var modulo = 12 % 9
-        var Difference_In_Minutes = parseInt(deadline.getTime()-today.getTime())/(60*1000);
-        var days = parseInt(Difference_In_Minutes / (60*24));
-        var hours = parseInt((Difference_In_Minutes % (60*24)) / 60);
-        var minutes = parseInt((Difference_In_Minutes % (60*24)) % 60);
-        var timeLeft = days+" days, "+hours+" hours, "+minutes+" minutes";
-        return timeLeft
-      }
-    </script> 
-  </head>
+<div class="mb-4 d-flex justify-content-between">
+  <div>
+    <a class="btn btn-primary" href="/marketplace/create" style="margin-left: 10px">Create New</a>
+  </div>
+  <h2>My Posts<h2>
+  <h2><h2>
+</div>
 
-  <h1>{% block title %}Your Posts{% endblock %}</h1>
-  {% if g.user %}
-    <a class="action" href="{{ url_for('blog.create') }}">New</a>
-  {% endif %}
-=======
-    <title>{% block title %}My Posts{% endblock %}</title>
-      <script type = "text/javascript" > 
-        function getCountdown(date) {
-          var deadline = new Date(date);
-          var today =  new Date(Date.now());
-          var modulo = 12 % 9
-          var Difference_In_Minutes = parseInt(deadline.getTime()-today.getTime())/(60*1000);
-          var days = parseInt(Difference_In_Minutes / (60*24));
-          var hours = parseInt((Difference_In_Minutes % (60*24)) / 60);
-          var minutes = parseInt((Difference_In_Minutes % (60*24)) % 60);
-          var timeLeft = days+" days, "+hours+" hours, "+minutes+" minutes";
-          return timeLeft
-        }
-      </script>
-  </head>
-
-  <nav id="dashboard-nav" class="shadow p-3 navbar navbar-light bg-light rounded" style="margin-bottom: 20px; margin-top: 20px">
-    <a class="navbar-brand" href="#">Posts</a>
-    <ul class="nav nav-pills">
-    <li class="nav-item">
-        <a class="nav-link" href="#inbox">Inbox</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#posts">Posts</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#bids">Bids</a>
-    </li>
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-        <div class="dropdown-menu">
-        <a class="dropdown-item" href="#one">one</a>
-        <a class="dropdown-item" href="#two">two</a>
-        <div role="separator" class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#three">three</a>
-        </div>
-    </li>
-    </ul>
-  </nav>
->>>>>>> Firebase
+  <!-- SEARCH BAR -->
+  <!---->
 {% endblock %}
 
+
+
+{% block left %}
+<div class="shadow-sm card" style="width: 100%;">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+        <div class="form-group">
+            <label for="sortingOptions">Sort by</label>
+            <select class="browser-default custom-select" id="sortingOptions">
+              <option>most recent</option>
+              <option>deadline</option>
+              <option>reward</option>
+            </select>
+          </div>
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="showInactiveSwitch" >
+          <label class="custom-control-label" for="showInactiveSwitch">Show inactive posts</label>
+        </div>
+
+    </li>
+    <li class="list-group-item"><a href="#post-Lw3w5okTivrfPkFnN67"> jump </a></li>
+  </ul>
+</div>
+{% endblock %}
 {% block content %}
   {% for post in posts %}
-<<<<<<< HEAD
-    <article class="post">
-      <header>
-        <div>
-          <h1>{{ post['title'] }}</h1>
-          <div class="about">{{ post['created'].strftime('%Y-%m-%d') }} at {{ post['created'].strftime('%H:%M') }}</div>
+  <div class="shadow-sm card" style="width: 100%; margin-bottom: 10px" id="post{{ post.key() }}">
+      <div class="card-body">
+        <div class="row card-title" style="width: 100%">
+          <div class="col-sm-9"> <h5>{{ post.val()['title'] }}</h5></div>
+            <div class="col-sm-3">
+              <h5>
+                <span class="pull-right">
+                  <i class="fas fa-dollar-sign"></i> 
+                  {{post.val()["budget"]}}
+                </span>
+              </h5>
+            </div>
         </div>
-        {% if g.user['id'] == post['author_id'] %}
-          <a class="action" href="{{ url_for('blog.update', id=post['id']) }}">Edit</a>
-        {% endif %}
-      </header>
-      <p class="body">{{ post['body'] }}</p>
-      <div class="about">Tags: (tags einfügen) <br> Budget: {{ post['budget'] }}$ <br> Payment: {{ post['payment'] }} <br> Deadline in <script>document.write(getCountdown("{{ post['deadline'] }}"))</script></div>
-
-      
-    </article>
-    {% if not loop.last %}
-      <hr>
-    {% endif %}
-  {% endfor %}
-{% endblock %}
-=======
-  <div class="card">
-      <div class="header">
-        <span class="title">
-            {{ post.val()['title'] }}
-        </span>
-        <span class="price">
-          <i class="fas fa-dollar-sign"></i>{{ post.val()['budget'] }}
-        </span>
+        <a href="/user/{{post.val()['author']}}">@{{post.val()['author_user']}}</a> · {{ utcFromTimestamp(post.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(post.val()['timestamp']).strftime('%H:%M') }}
+        <hr>
+        <p class="card-text">{{ post.val()['body'] }}.</p>
       </div>
-      <hr>
-      <div class="about">
-        <span class="author"> <a href="/user/1">@{{ g.user['displayName'] }}</a> · {{ utcFromTimestamp(post.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(post.val()['timestamp']).strftime('%H:%M') }} <span>
-        <span class="deadline"> <script>document.write(getCountdown("{{ post.val()['deadline'] }}"))</script> </span>
-        {% if g.user %}
-          <div class="dropdown" style="float:right;">
-            <button class="dropbtn"><i class="fas fa-chevron-down"></i></button>
-            <div class="dropdown-content" style="right:0;">
-              {% if g.user['localId'] == post.val()['author'] %}
-                <a class="action" href="{{ url_for('me.post', id=post.key()) }}">View</a><br>
-                <a class="action" href="{{ url_for('marketplace.update', id=post.key()) }}">Edit</a>
-              {% else %}
-                <a class="action" href="{{ url_for('marketplace.bid', id=post.key()) }}">Bid</a>
-              {% endif %}
-          </div>
-          </div>
+      <ul class="list-group list-group-flush">
+        <hr>
+        <li class="list-group-item"><script>document.write(getCountdown("{{ post.val()['deadline'] }}"))</script> until deadline</li>
+      </ul>
+      <div class="card-body">
+          {% if g.user %}
+          <span class="btn-group"></span>
+            <button class="btn btn-primary shadow-none" type="button" data-toggle="collapse" data-target="#askFAQ{{ post.key() }}" aria-expanded="false" aria-controls="collapseExample">
+              FAQ
+            </button>
+            <div style="margin-top: 10px" class="collapse" id="askFAQ{{ post.key() }}">
+              <div class="accordion" id="accordionExample">
+                  <div class="card">
+                    <ul class="list-group list-group-flush">
+                      {% if post.val()['faq'] is defined %}
+                        {% set faqs = post.val()['faq'] %}
+                        {% if faqs.keys()|length == 0 %}
+                          <li class="list-group-item">
+                            No Questions Answered
+                          </li>
+                        {% endif %}
+                        {% for faqKey in faqs.keys() %}
+                          {% set faq = faqs[faqKey] %}
+                          <li class="list-group-item">
+                            <button style="width: 100%" class="btn shadow-none collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ{{ faqKey }}" aria-expanded="false" aria-controls="collapseFAQ{{ faqKey }}">
+                              <div class="float-left"><h5>{{ faq['question'] }} ?</h5></div>
+                              <div class="float-right"><i class="fas fa-chevron-down"> </i></div>
+                            </button>
+                            <div id="collapseFAQ{{ faqKey }}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                              <hr>
+                              {{ faq['answer'] }}
+                            </div> 
+                          </li>
+                        {% endfor %}
+                      {% else %}
+                      <li class="list-group-item">
+                        No Questions Answered
+                      </li>
+                      {% endif %}
+                      <li class="list-group-item">
+                        <a style="width: 100%" class="btn btn-dark" href="{{ url_for('marketplace.askFAQ', id=post.key()) }}">Ask a question</a>
+                      </li>
+                    </ul>
+                  </div>
+              </div>
+            </div>
+          {% if g.user.localId == post.val()['author'] %}
+            <a class="btn btn-primary" href="{{ url_for('me.post', id=post.key()) }}">View</a></button>
+            <a class="btn btn-dark" href="{{ url_for('marketplace.update', id=post.key()) }}">Edit</a>
+          {% else %}
+            <a class="btn btn-primary" href="{{ url_for('marketplace.bid', id=post.key()) }}">Bid</a>
           {% endif %}
-      </div>
-    
-      <hr>
-      <div class="body">
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-      </div>
-      <hr>
-      <div class="detail">
-        <ul class="tags">
-          <li><a>Python</a></li>
-          <li><a>Flask</a></li>
-          <li><a>HTML</a></li>
-          <li><a>CSS</a></li>
-        </ul>
+        </span>
+        {% endif %}
       </div>
     </div>
   {% endfor %}
 {% endblock %}
->>>>>>> Firebase

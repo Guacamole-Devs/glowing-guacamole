@@ -3,7 +3,15 @@
 {% block title %}Marketplace{% endblock %}
 
 {% block header %}
-<h2>Marketplace</h2>
+<div class="mb-4 d-flex justify-content-between">
+  <div>
+    <a class="btn btn-primary" href="/marketplace/create" style="margin-left: 10px">My Posts</a>
+    <a class="btn btn-primary" href="/marketplace/create" style="margin-left: 10px">Create New</a>
+  </div>
+  <h2>Marketplace<h2>
+  <h2><h2>
+</div>
+
   <!-- SEARCH BAR -->
   <!---->
 {% endblock %}
@@ -47,7 +55,7 @@
               </h5>
             </div>
         </div>
-        <a href="/user/{{post.val()['author']}}">@{{post.val()['author']}}</a> · {{ utcFromTimestamp(post.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(post.val()['timestamp']).strftime('%H:%M') }}
+        <a href="/user/{{post.val()['author']}}">@{{post.val()['author_user']}}</a> · {{ utcFromTimestamp(post.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(post.val()['timestamp']).strftime('%H:%M') }}
         <hr>
         <p class="card-text">{{ post.val()['body'] }}.</p>
       </div>
@@ -97,7 +105,7 @@
                   </div>
               </div>
             </div>
-          {% if g.user['localId'] == post.val()['author'] %}
+          {% if g.user.localId == post.val()['author'] %}
             <a class="btn btn-primary" href="{{ url_for('me.post', id=post.key()) }}">View</a></button>
             <a class="btn btn-dark" href="{{ url_for('marketplace.update', id=post.key()) }}">Edit</a>
           {% else %}
