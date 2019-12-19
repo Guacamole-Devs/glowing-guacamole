@@ -60,7 +60,10 @@ def register():
             # store the user id in a new session and return to the index
             user = firebase.User(response)
             firebase.auth.send_email_verification(user.idToken)
+            firebase.auth.sign_in_with_email_and_password(email, password)
             user.changeAccountInfo(username)
+            firebase.db.child("users").child(user.localId).child("static").set({"created": user.createdAt})
+            
             user = None
             flash("Check your Email")
             return redirect(url_for("auth.login"))
@@ -88,7 +91,8 @@ def login(error = None):
             user.printUser()
             if user.isEmailVerified == False:
                 flash("Verify your Email adress")
-                return redirect(url_for("auth.login"))
+                session["user_token"] = user.idToken
+                return redirect(url_for("auth.verify", email=email, password=password))
             session.clear()
             session["user_id"] = user.localId
             session["user_token"] = user.idToken
@@ -123,3 +127,12 @@ def forgot():
         else:
             flash(error)
     return render_template("auth/forgot.html")
+
+@bp.route("/verifyEmail", methods=("GET", "POST"))
+def verify(email=None, password=None):
+    if request.method == "POST":
+        email = request.form.get("email")
+        firebase.auth.send_email_verification(session["user_token"])
+        session.clear()
+        return render_template("auth/login.html")
+    return render_template("auth/verify.html")

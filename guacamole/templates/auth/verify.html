@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Verify your Email Adress{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <p> Please verify your Email by clicking on the link in the email you got from us </p>
+  
+  {% if session["user_token"] is defined %}
+    <form method="post">
+      <p> If you deleted your Email send a new one by pressing this button </p>
+      <button type="submit" class="btn btn-primary">Send New Email</button>
+    </form>
+  {% endif %}
+{% endblock %}
