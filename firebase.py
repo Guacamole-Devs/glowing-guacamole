@@ -20,8 +20,10 @@ class Profile:
         self.photo_url = profile_dict.val()['photo_url']
 
 
-def getUser(uid=None, username=None):
-    return Profile(uid)
+def getUserProfile(id):
+    databaseProfile = db.child("users").child(id).get()
+    return databaseProfile
+    
 
 
 class User:
