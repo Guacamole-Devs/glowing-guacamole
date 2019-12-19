@@ -28,16 +28,13 @@
 <hr>
 <div class="container bootstrap snippet">
     <div class="row">
-        <div class="col-sm-10">
-            <h1>{{ user.username }}</h1></div>
-        <div class="col-sm-2">
-            <a href="/users" class="pull-right"><img title="profile image" class="img-circle img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png"></a>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-sm-3">
             <!--left col-->
-
+            <div class="mb-4 row-flex">
+                <div class="d-flex justify-content-center">
+                    <a href="/users" class="pull-right"><img title="profile image" src="https://bootdey.com/img/Content/avatar/avatar1.png" style="height: 200px; border-radius: 50%"></a>
+                </div>
+            </div>
             <ul class="list-group">
                 <li class="list-group-item text-muted">Profile @{{ user.username }}</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span> 2.13.2014</li>
@@ -64,14 +61,117 @@
 
         </div>
         <!--/col-3-->
+        
         <div class="col-sm-9">
-
-            <ul class="nav nav-tabs" id="myTab">
-                <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
-                <li><a href="#messages" data-toggle="tab">Messages</a></li>
-                <li><a href="#settings" data-toggle="tab">Settings</a></li>
-            </ul>
+            <div class="mb-4 row">
+                <div class="d-flex justify-content-center">
+                    <h1>{{ user.fullname }} Testy Testmann</h1><br>
+                    <div style="margin-left: 10px" class="align-self-center"><h4>@{{ profile.val()['username'] }}</h4></div>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-center">
+                    <h4>@{{ user.username }}</h4>
+                </div>
             </div>
+            <ul class="mb-2 nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="home" aria-selected="true">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="post-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="profile" aria-selected="false">Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="stuff-tab" data-toggle="tab" href="#stuff" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+                </li>
+            </ul>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane active" id="info" role="tabpanel" aria-labelledby="home-tab">
+                    Put some basic Info here 
+                    - Reviews Statistics
+                    - Trust Score
+                </div>
+                <div class="tab-pane fade" id="posts" role="tabpanel" aria-labelledby="post-tab">
+                    {% for post in posts %}
+                        <div class="shadow-sm card" style="width: 100%; margin-bottom: 10px" id="post{{ post.key() }}">
+                            <div class="card-body">
+                                <div class="row card-title" style="width: 100%">
+                                <div class="col-sm-9"> <h5>{{ post.val()['title'] }}</h5></div>
+                                    <div class="col-sm-3">
+                                    <h5>
+                                        <span class="pull-right">
+                                        <i class="fas fa-dollar-sign"></i> 
+                                        {{post.val()["budget"]}}
+                                        </span>
+                                    </h5>
+                                    </div>
+                                </div>
+                                <a href="/marketplace/user/{{post.val()['author']}}">@{{post.val()['author_user']}}</a> · {{ utcFromTimestamp(post.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(post.val()['timestamp']).strftime('%H:%M') }}
+                                <hr>
+                                <p class="card-text">{{ post.val()['body'] }}.</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <hr>
+                                <li class="list-group-item"><script>document.write(getCountdown("{{ post.val()['deadline'] }}"))</script> until deadline</li>
+                            </ul>
+                            <div class="card-body">
+                                {% if g.user %}
+                                <span class="btn-group"></span>
+                                    <button class="btn btn-primary shadow-none" type="button" data-toggle="collapse" data-target="#askFAQ{{ post.key() }}" aria-expanded="false" aria-controls="collapseExample">
+                                    FAQ
+                                    </button>
+                                    <div style="margin-top: 10px" class="collapse" id="askFAQ{{ post.key() }}">
+                                    <div class="accordion" id="accordionExample">
+                                        <div class="card">
+                                            <ul class="list-group list-group-flush">
+                                            {% if post.val()['faq'] is defined %}
+                                                {% set faqs = post.val()['faq'] %}
+                                                {% if faqs.keys()|length == 0 %}
+                                                <li class="list-group-item">
+                                                    No Questions Answered
+                                                </li>
+                                                {% endif %}
+                                                {% for faqKey in faqs.keys() %}
+                                                {% set faq = faqs[faqKey] %}
+                                                <li class="list-group-item">
+                                                    <button style="width: 100%" class="btn shadow-none collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ{{ faqKey }}" aria-expanded="false" aria-controls="collapseFAQ{{ faqKey }}">
+                                                    <div class="float-left"><h5>{{ faq['question'] }} ?</h5></div>
+                                                    <div class="float-right"><i class="fas fa-chevron-down"> </i></div>
+                                                    </button>
+                                                    <div id="collapseFAQ{{ faqKey }}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                    <hr>
+                                                    {{ faq['answer'] }}
+                                                    </div> 
+                                                </li>
+                                                {% endfor %}
+                                            {% else %}
+                                            <li class="list-group-item">
+                                                No Questions Answered
+                                            </li>
+                                            {% endif %}
+                                            <li class="list-group-item">
+                                                <a style="width: 100%" class="btn btn-dark" href="{{ url_for('marketplace.askFAQ', id=post.key()) }}">Ask a question</a>
+                                            </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    </div>
+                                {% if g.user.localId == post.val()['author'] %}
+                                    <a class="btn btn-primary" href="{{ url_for('me.post', id=post.key()) }}">View</a></button>
+                                    <a class="btn btn-dark" href="{{ url_for('marketplace.update', id=post.key()) }}">Edit</a>
+                                {% else %}
+                                    <a class="btn btn-primary" href="{{ url_for('marketplace.bid', id=post.key()) }}">Bid</a>
+                                {% endif %}
+                                </span>
+                                {% endif %}
+                            </div>
+                            </div>
+                        {% endfor %}
+
+                </div>
+                <div class="tab-pane fade" id="stuff" role="tabpanel" aria-labelledby="stuff-tab">...</div>
+              </div>
+            <hr></hr>
+            
             <!--/tab-pane-->
         </div>
         <!--/tab-content-->

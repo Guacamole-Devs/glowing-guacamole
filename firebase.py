@@ -11,8 +11,21 @@ db = firebase.database()
 import requests
 import json
 
+class Profile:
+    def __init__(self, uid):
+        self.uid = uid
+        profile_dict = db.child('users').child(self.uid).get()
+        self.username = profile_dict.val()['username']
+        self.created_at = profile_dict.val()['created_at']
+        self.photo_url = profile_dict.val()['photo_url']
+
+
+def getUser(uid=None, username=None):
+    return Profile(uid)
+
 
 class User:
+    profile = None
     user = None
     def __init__(self, user):
         self.user = user
@@ -44,7 +57,7 @@ class User:
             self.isDisabled = (userInfo.get("disabled") == True)
             self.username = userInfo.get("providerUserInfo")[0].get("displayName")
                 
-    def changeAccountInfo(self, username = None):
+    def changeAccountInfo(self, username = None, photoUrl = None):
         if username is None:
             username = self.username
 
@@ -52,10 +65,15 @@ class User:
         headers = {'content-type': 'application/json'}
         data = {
             'idToken': self.idToken,
-            'displayName': username,
-            'photoUrl': self.photoUrl,
             'returnSecureToken': True
             }
+        if username is not None:
+            data['displayName'] = username
+            db.child("users").child(self.localId).set({'username': username})
+
+        if photoUrl is not None:
+            data['photoUrl'] = photoUrl
+            db.child("users").child(self.localId).set({'photoUrl': photoUrl})
 
         json_data = json.dumps(data)
         response = requests.post(url, data=json_data, headers=headers)
@@ -71,14 +89,3 @@ class User:
         DISABLED: {}
          CREATED: {}
         """.format(self.localId, self.email, self.isEmailVerified, self.username, self.photoUrl, self.isDisabled, self.createdAt))
-        
-
-
-
-
-auth.sign_in_with_email_and_password("test1@login.noahkamara.com","123456")
-user = auth.current_user
-id_token = user["idToken"]
-token = auth.create_custom_token("id_token")
-
-current_user = User(user)

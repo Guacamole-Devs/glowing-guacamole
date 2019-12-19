@@ -34,7 +34,10 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = firebase.User(firebase.auth.current_user)
+        if firebase.auth.current_user is not None:
+            g.user = firebase.User(firebase.auth.current_user)
+        else:
+            session.clear()
 
 
 @bp.route("/register", methods=("GET", "POST"))

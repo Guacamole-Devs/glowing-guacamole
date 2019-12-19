@@ -18,7 +18,11 @@ bp = Blueprint("me", __name__, url_prefix="/me")
 @bp.route("", methods=("GET", "POST"))
 @login_required
 def profile():
-    return render_template("profile/profile.html", user=g.user)
+    id = g.user.localId
+    theirProfile = firebase.db.child("users").child(id).get()
+    theirPosts = firebase.db.child("marketplace").child("posts").order_by_child("author").equal_to(id).get()
+    from datetime import datetime
+    return render_template("profile/profile.html", user=id, profile=theirProfile, posts=theirPosts, utcFromTimestamp=datetime.utcfromtimestamp)
 
 @bp.route("/posts", methods=("GET", "POST"))
 @login_required

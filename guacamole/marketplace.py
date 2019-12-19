@@ -28,7 +28,6 @@ def index():
         deadlineDate = datetime.strptime(deadline, "%Y-%m-%d")
         if not datetime.utcnow() > deadlineDate:
             filteredPosts.append(post)
-        
     return render_template("marketplace/index.html", posts=filteredPosts, utcFromTimestamp=datetime.utcfromtimestamp)
 
 
@@ -150,6 +149,7 @@ def bid(id):
     return render_template("marketplace/bid.html", post=post, utcFromTimestamp=datetime.utcfromtimestamp)
 
 @bp.route("/<string:id>/askFAQ", methods=("GET", "POST"))
+@login_required
 def askFAQ(id):
     post = firebase.db.child("marketplace").child("posts").child(id).get()
     if request.method == "POST":
@@ -177,6 +177,11 @@ def askFAQ(id):
     from datetime import datetime
     return redirect(url_for("marketplace.index"))
 
+
 @bp.route("/user/<string:id>", methods=("GET", "POST"))
+@login_required
 def userProfile(id):
-    return "Hello"
+    theirProfile = firebase.db.child("users").child(id).get()
+    theirPosts = firebase.db.child("marketplace").child("posts").order_by_child("author").equal_to(id).get()
+    from datetime import datetime
+    return render_template("profile/profile.html", user=id, profile=theirProfile, posts=theirPosts, utcFromTimestamp=datetime.utcfromtimestamp)

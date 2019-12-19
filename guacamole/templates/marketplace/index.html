@@ -55,7 +55,7 @@
               </h5>
             </div>
         </div>
-        <a href="/user/{{post.val()['author']}}">@{{post.val()['author_user']}}</a> · {{ utcFromTimestamp(post.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(post.val()['timestamp']).strftime('%H:%M') }}
+        <a href="/marketplace/user/{{post.val()['author']}}">@{{post.val()['author_user']}}</a> · {{ utcFromTimestamp(post.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(post.val()['timestamp']).strftime('%H:%M') }}
         <hr>
         <p class="card-text">{{ post.val()['body'] }}.</p>
       </div>
