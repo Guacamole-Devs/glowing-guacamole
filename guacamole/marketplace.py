@@ -140,7 +140,7 @@ def bid(id):
             "delivery":delivery,
             "payment":payment,
             "body": body,
-            "author": g.user["localId"],
+            "author": g.user.localId,
             "timestamp": unixtime
         }
         firebase.db.child("marketplace").child("bids").push(bid)

@@ -62,7 +62,6 @@ def register():
             firebase.auth.send_email_verification(user.idToken)
             firebase.auth.sign_in_with_email_and_password(email, password)
             user.changeAccountInfo(username)
-            firebase.db.child("users").child(user.localId).child("static").set({"created": user.createdAt})
             
             user = None
             flash("Check your Email")
@@ -76,6 +75,7 @@ def register():
 def login(error = None):
     """Log in a registered user by adding the user id to the session."""
     if request.method == "POST":
+        session.clear()
         email = request.form["email"]
         password = request.form["password"]
         error = None

@@ -8,6 +8,7 @@
     <script src="https://kit.fontawesome.com/7eaafe9159.js" crossorigin="anonymous"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/countdown.css">
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -30,7 +31,7 @@
       });
     </script>
     <!-- JS: Deadline Countdown -->
-    <script type = "text/javascript" > 
+    <script>
       function getCountdown(date) {
         var deadline = new Date(date);
         var today =  new Date(Date.now());
@@ -39,21 +40,22 @@
         var days = parseInt(Difference_In_Minutes / (60*24));
         var hours = parseInt((Difference_In_Minutes % (60*24)) / 60);
         var minutes = parseInt((Difference_In_Minutes % (60*24)) % 60);
-        var timeLeft = "";
-        if ((days != 0 || days < 0) != true) {
-          timeLeft += days+" days "
-        }
-        if ((hours == 0 || hours < 0) != true) {
-          timeLeft += ", "+hours+" hours "+minutes+" minutes";
-        }
-        if ((minutes != 0 || minutes < 0) != true) {
-          timeLeft += ", "+minutes+" minutes";
-        }
-        
-        
-        return timeLeft
+        return [('0' + days).slice(-2), ('0' + hours).slice(-2), ('0' + minutes).slice(-2)]
+      }
+      function getCountdownDays(date) {
+        values = getCountdown(date)
+        return values[0]
+      }
+      function getCountdownHours(date) {
+        values = getCountdown(date)
+        return values[1]
+      }
+      function getCountdownMins(date) {
+        values = getCountdown(date)
+        return values[2]
       }
     </script>
+
     <!---->
 
     <title>{% block title %}{% endblock %} - guacamole</title>

@@ -1,0 +1,10 @@
+.countdown-number {
+    font-size: 2rem; 
+    line-height: 2rem;
+    font-weight: 700;
+}
+
+.countdown-text {
+    font-size: 1rem; 
+    line-height: 1rem;
+}

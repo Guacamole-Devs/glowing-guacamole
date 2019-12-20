@@ -61,7 +61,30 @@
       </div>
       <ul class="list-group list-group-flush">
         <hr>
-        <li class="list-group-item"><script>document.write(getCountdown("{{ post.val()['deadline'] }}"))</script> until deadline</li>
+        <li class="list-group-item">
+          <div class="d-flex justify-content-center">
+              <div class="m-1 flex-column justify-content-center">
+                <div class="text-center countdown-number" id="days">
+                  <script>document.write(getCountdownDays("{{post.val()['deadline']}}"))</script>
+                </div>
+                <div class="countdown-text">days</div>
+              </div>
+              <div class="m-1 flex-column justify-content-center">
+                <div class="text-center countdown-number" id="hours">
+                  <script>document.write(getCountdownHours("{{post.val()['deadline']}}"))</script>
+                </div>
+                <div class="countdown-text">hours</div>
+              </div>
+              <div class="m-1 flex-column justify-content-center">
+                <div class="text-center countdown-number" id="minutes">
+                  <script>document.write(getCountdownMins("{{post.val()['deadline']}}"))</script>
+                </div>
+                <div class="countdown-text">mins</div>
+              </div>
+              
+          </div>
+        </li>
+        </li>
       </ul>
       <div class="card-body">
           {% if g.user %}
