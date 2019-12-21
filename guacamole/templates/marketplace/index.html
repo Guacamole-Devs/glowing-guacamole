@@ -3,15 +3,19 @@
 {% block title %}Marketplace{% endblock %}
 
 {% block header %}
-<div class="mb-4 d-flex justify-content-between">
-  <div>
-    <a class="btn btn-primary" href="/marketplace/create" style="margin-left: 10px">My Posts</a>
-    <a class="btn btn-primary" href="/marketplace/create" style="margin-left: 10px">Create New</a>
+<div class="row">
+  <div class="col">
+    <h2>Marketplace</h2>
   </div>
-  <h2>Marketplace<h2>
-  <h2><h2>
+  <div class="col-3">
+    <div class="flex-row">
+      {% if g.user %}
+      <a class="btn btn-primary" href="/me/posts" style="margin-left: 10px">My Posts</a>
+      {% endif %}
+      <a class="btn btn-primary" href="/marketplace/create" style="margin-left: 10px">Create New</a>
+    </div>
+  </div>
 </div>
-
   <!-- SEARCH BAR -->
   <!---->
 {% endblock %}

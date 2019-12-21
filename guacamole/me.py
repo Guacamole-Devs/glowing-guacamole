@@ -38,9 +38,9 @@ def post(id):
     """Show post overview"""
     post = firebase.db.child("marketplace").child("posts").child(id).get()
     bids = firebase.db.child("marketplace").child("bids").order_by_child("post").equal_to(id).get()
-    print(post)
+    faqs = firebase.db.child("marketplace").child("faqs").order_by_child("post").equal_to(id).get()
     from datetime import datetime
-    return render_template("profile/post_detail.html", post=post, bids=bids, utcFromTimestamp=datetime.utcfromtimestamp)
+    return render_template("profile/post_detail.html", post=post, bids=bids, faqs=faqs, utcFromTimestamp=datetime.utcfromtimestamp)
 
 @bp.route("/bids", methods=("GET", "POST"))
 @login_required
@@ -53,4 +53,27 @@ def bids():
 @bp.route("/dashboard", methods=("GET", "POST"))
 @login_required
 def dashboard():
-    return render_template("profile/dashboard.html")
+    myPosts = firebase.db.child("marketplace").child("posts").order_by_child("author").equal_to(g.user.localId).get()
+    posts = []
+    for post in myPosts:
+        bids = firebase.db.child("marketplace").child("bids").order_by_child("post").equal_to(post.key()).get().each()
+        faqs = firebase.db.child("marketplace").child("faqs").order_by_child("post").equal_to(post.key()).get().each()
+        unseenFaqs = 0
+        for faq in faqs:
+            if not (faq.val()['answered'] == True):
+                unseenFaqs += 1
+
+        p = {
+            'id': post.key(),
+            'title': post.val()['title'],
+            'timestamp': post.val()['timestamp'],
+            'deadline': post.val()['deadline'],
+            'bids': len(bids),
+            'faqs': len(faqs),
+            'unseen_faqs': unseenFaqs
+        }
+        print(p)
+        posts.append(p)
+
+    from datetime import datetime
+    return render_template("profile/dashboard.html", posts=posts, utcFromTimestamp=datetime.utcfromtimestamp)

@@ -4,18 +4,31 @@
     <head>
         <meta charset="utf-8"> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <h1>{% block title %} "{{ post.val()['title'] }}"{% endblock %}</h1> 
-    <div class="shadow-sm card" style="width: 100%; margin-top: 10px">
-        <div class="card-body">
-            
-            <span class="btn-group">
-                <a class="btn btn-success" href="{{ url_for('marketplace.bid', id=post.key()) }}">Accept</a>
-                <a class="btn btn-danger" href="{{ url_for('marketplace.bid', id=post.key()) }}">Message</a>
-            </span>
-        </div>
-    </div>
+    </head>    
+    <nav id="dashboard-nav" class="shadow p-3 navbar navbar-light bg-light rounded" style="margin-bottom: 20px; margin-top: 20px">
+        <a class="navbar-brand" href="#">Post Overview</a>
+        <ul class="nav nav-pills" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="bids-tab" data-toggle="tab" href="#bids" role="tab" aria-controls="bids" aria-selected="true">Bids</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="faqs-tab" data-toggle="tab" href="#faqs" role="tab" aria-controls="faqs" aria-selected="false">Questions</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="inbox-tab" data-toggle="tab" href="#inbox" role="tab" aria-controls="inbox" aria-selected="false">Meta Information</a>
+            </li>
+        </ul>
+    </nav>
 {% endblock %}
+<!-- <div class="shadow-sm card" style="width: 100%; margin-top: 10px">
+    <div class="card-body">
+        
+        <span class="btn-group">
+            <a class="btn btn-success" href="{{ url_for('marketplace.bid', id=post.key()) }}">Accept</a>
+            <a class="btn btn-danger" href="{{ url_for('marketplace.bid', id=post.key()) }}">Message</a>
+        </span>
+    </div>
+</div> -->
 
 {% block secLeft %}
 <div class="shadow-sm card" style="width: 100%; margin-top: 10px">
@@ -23,7 +36,7 @@
       <div class="card-title" style="width: 100%">
         <div class="float-left"><h5>{{ post.val()['title'] }}</h5></div>
       </div>
-      <a href="/user/{{post.val()['author']}}">@{{post.val()['author']}}</a>
+      <a href="/user/{{post.val()['author']}}">@{{post.val()['author_user']}}</a>
       <br>
       <div class="card-title">
         <div class="float-left"><i class="fas fa-dollar-sign"> {{post.val()["budget"]}} - {{post.val()["payment"]}}</i></div>
@@ -40,11 +53,77 @@
 {% endblock %}
 
 {% block secContent %}
-{% for bid in bids %}
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane active" id="bids" role="tabpanel" aria-labelledby="bids-tab">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Bid</th>
+                <th scope="col">Price</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Delivery</th>
+                <th scope="col">Author</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Options</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for bid in bids %}
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>{{ bid.val()['body'] }}</td>
+                        <td>{{ bid.val()['price'] }}</td>
+                        <td>{{ bid.val()['timestamp'] }}</td>
+                        <td>{{ bid.val()['delivery'] }}</td>
+                        <td>{{ bid.val()['author_user'] }}</td>
+                        <td> no rating</td>
+                        <td>
+                            <span class="btn-group">
+                                <a class="btn-sm btn-success" href="">Accept</a>
+                                <a class="btn-sm btn-danger" href="">Decline</a>
+                            </span>
+                        </td>
+                     </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="faqs" role="tabpanel" aria-labelledby="faqs-tab">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Question</th>
+                <th scope="col">Author</th>
+                <th scope="col">Asked At</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for faq in faqs %}
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>{{ faq.val()['question'] }}</td>
+                        <td>{{ faq.val()['author'] }}</td>
+                        <td>{{ faq.val()['timestamp'] }}</td>
+                     </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="inbox" role="tabpanel" aria-labelledby="bid-tab">this is inbox</div>
+</div>
+
+
+<!-- {% for bid in bids %}
     <div class="shadow-sm card" style="width: 100%; margin-top: 10px">
         <div class="card-body">
             <div class="card-title" style="width: 100%">
-                <div class="float-left"><h5>{{bid.val()['author']}}</h5></div>
+                <div class="float-left"><h5>{{bid.val()['author_user']}}</h5></div>
                 <div class="float-right"><i class="fas fa-dollar-sign"> {{bid.val()["price"]}}</i></div>
             </div>
             <br>
@@ -62,5 +141,5 @@
         
     </div>
     
-{% endfor %}
+{% endfor %} -->
 {% endblock %}
