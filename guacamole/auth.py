@@ -36,7 +36,7 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        if firebase.auth.current_user is not None:
+        if firebase.auth.current_user != None:
             g.user = firebase.User(firebase.auth.current_user)
         else:
             session.clear()
