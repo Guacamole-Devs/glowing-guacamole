@@ -7,40 +7,60 @@
 
     <nav id="dashboard-nav" class="shadow p-3 navbar navbar-light bg-light rounded" style="margin-bottom: 20px; margin-top: 20px">
         <a class="navbar-brand" href="#">Dashboard</a>
-        <ul class="nav nav-pills">
-        <li class="nav-item">
-            <a class="nav-link" href="#inbox">Inbox</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#posts">Posts</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#bids">Bids</a>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-            <div class="dropdown-menu">
-            <a class="dropdown-item" href="#one">one</a>
-            <a class="dropdown-item" href="#two">two</a>
-            <div role="separator" class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#three">three</a>
-            </div>
-        </li>
+        <ul class="nav nav-pills" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="post-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Active Posts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="bid-tab" data-toggle="tab" href="#bids" role="tab" aria-controls="bids" aria-selected="false">Active Bids</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="inbox-tab" data-toggle="tab" href="#inbox" role="tab" aria-controls="inbox" aria-selected="false">Active Bids</a>
+            </li>
         </ul>
     </nav>
+
 {% endblock %}
 
-{% block secLeft %}
-<h4> Inbox </h4>
-{% endblock %}
+{% block fullcontent%}
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane active" id="posts" role="tabpanel" aria-labelledby="home-tab">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Title</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Deadline</th>
+                <th scope="col">Bids</th>
+                <th scope="col">FAQs</th>
+                <th scope="col">Options</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td scope="row">
+                            <a href="/me/post/{{post['id']}}">{{post['title']}}</a>
+                        </td>
+                        <td>{{post['timestamp']}}</td>
+                        <td>{{post['deadline']}}</td>
+                        <td>{{post['bids']}}</td>
+                        <td>{{post['faqs']}} {% if post['unseen_faqs'] > 0 %} {{post['unseen_faqs']}} {% endif %}</td>
+                        <td>Options</td>
+                     </tr>
+                {% endfor %}
+              
 
-{% block secContent %}
-<div data-spy="scroll" data-target="#dashboard-nav" data-offset="0">
-    <h4 id="inbox">INBOX</h4>
-    <p>...</p>
-    <h4 id="posts">POSTS</h4>
-    <p>...</p>
-    <h4 id="bids">BIDS</h4>
-    <p>...</p>
+            </tbody>
+          </table>
+    </div>
+    <div class="tab-pane fade" id="bids" role="tabpanel" aria-labelledby="bid-tab">
+        Empty
+    </div>
+    <div class="tab-pane fade" id="inbox" role="tabpanel" aria-labelledby="bid-tab">this is inbox</div>
 </div>
 {% endblock %}

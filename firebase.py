@@ -1,11 +1,14 @@
 import pyrebase
+import os
+import json
 
-config = eval(open("cred.txt").read())
+config = eval(os.getenv("firebase"))
+config["serviceAccount"] = json.loads(os.getenv("serviceAccount"))
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
 
-
+ 
 
 
 import requests
@@ -19,10 +22,9 @@ class Profile:
         self.created_at = profile_dict.val()['created_at']
         self.photo_url = profile_dict.val()['photo_url']
 
-
 def getUserProfile(id):
-    databaseProfile = db.child("users").child(id).get()
-    return databaseProfile
+    profile = db.child("users").child(id).get()
+    return profile
     
 
 
@@ -60,8 +62,6 @@ class User:
             self.username = userInfo.get("providerUserInfo")[0].get("displayName")
                 
     def changeAccountInfo(self, username = None, photoUrl = None):
-        if username is None:
-            username = self.username
 
         url ="https://identitytoolkit.googleapis.com/v1/accounts:update?key={}".format(auth.api_key)
         headers = {'content-type': 'application/json'}
@@ -71,11 +71,11 @@ class User:
             }
         if username is not None:
             data['displayName'] = username
-            db.child("users").child(self.localId).set({'username': username})
+            db.child("users").child(self.localId).child("profile").set({'username': username})
 
         if photoUrl is not None:
             data['photoUrl'] = photoUrl
-            db.child("users").child(self.localId).set({'photoUrl': photoUrl})
+            db.child("users").child(self.localId).child("profile").set({'photoUrl': photoUrl})
 
         json_data = json.dumps(data)
         response = requests.post(url, data=json_data, headers=headers)
