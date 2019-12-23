@@ -3,7 +3,7 @@ venv/
 __pycache__/
 instance/
 .cache/
-.vscode/
+.vscode/*
 .pytest_cache/
 .coverage
 htmlcov/
@@ -14,3 +14,6 @@ build/
 *.swp
 *~
 cred.txt
+.vscode/settings.json
+serviceAccountKey.json.json
+serviceAccountCredentials.json

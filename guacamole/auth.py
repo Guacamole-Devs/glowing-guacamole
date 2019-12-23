@@ -13,16 +13,18 @@ from flask import session
 from flask import url_for
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
-
 def login_required(view):
     """View decorator that redirects anonymous users to the login page."""
 
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if g.user == None:
-            return redirect(url_for("auth.login"))
+        try:
+            if g.user is None:
+                return redirect(url_for("auth.login"))
+        except AttributeError:
+            flash("You have been logged out")
+            return redirect(url_for("auth.login")) 
         return view(**kwargs)
-
     return wrapped_view
 
 @bp.before_app_request
@@ -34,7 +36,10 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = firebase.auth.current_user
+        if firebase.auth.current_user != None:
+            g.user = firebase.User(firebase.auth.current_user)
+        else:
+            session.clear()
 
 
 @bp.route("/register", methods=("GET", "POST"))
@@ -46,21 +51,23 @@ def register():
     if request.method == "POST":
         password = request.form["password"]
         email = request.form["email"]
+        username = request.form["username"]
         error = None
         try:
-            user = firebase.auth.create_user_with_email_and_password(email, password)
+            response = firebase.auth.create_user_with_email_and_password(email, password)
         except requests.exceptions.HTTPError as e:
             error_json = e.args[1]
             error = json.loads(error_json)['error']["message"]
         if error is None:
             # store the user id in a new session and return to the index
-            firebase.auth.send_email_verification(user["idToken"])
-            session.clear()
-            session["user_id"] = user["localId"]
-            session["user_token"] = user["idToken"]
-            flash("Please verify your Email Adress")
-            return redirect(url_for("marketplace.index"))
-
+            user = firebase.User(response)
+            firebase.auth.send_email_verification(user.idToken)
+            firebase.auth.sign_in_with_email_and_password(email, password)
+            user.changeAccountInfo(username)
+            
+            user = None
+            flash("Check your Email")
+            return redirect(url_for("auth.login"))
         flash(error)
 
     return render_template("auth/register.html")
@@ -70,20 +77,27 @@ def register():
 def login(error = None):
     """Log in a registered user by adding the user id to the session."""
     if request.method == "POST":
+        session.clear()
         email = request.form["email"]
         password = request.form["password"]
         error = None
         try:
-            user = firebase.auth.sign_in_with_email_and_password(email, password)
+            response = firebase.auth.sign_in_with_email_and_password(email, password)
         except requests.exceptions.HTTPError as e:
             error_json = e.args[1]
             error = json.loads(error_json)['error']["message"]
 
         if error is None:
             # store the user id in a new session and return to the index
+            user = firebase.User(response)
+            user.printUser()
+            if user.isEmailVerified == False:
+                flash("Verify your Email adress")
+                session["user_token"] = user.idToken
+                return redirect(url_for("auth.verify", email=email, password=password))
             session.clear()
-            session["user_id"] = user["localId"]
-            session["user_token"] = user["idToken"]
+            session["user_id"] = user.localId
+            session["user_token"] = user.idToken
             return redirect(url_for("marketplace.index"))
         flash(error)
 
@@ -93,13 +107,13 @@ def login(error = None):
 def logout():
     """Clear the current session, including the stored user id."""
     session.clear()
+    g.user = None
     return redirect(url_for("marketplace.index"))
 
 @bp.route("/forgot", methods=("GET", "POST"))
 def forgot():
     if request.method == "POST":
         email = request.form.get("email")
-        
         
         error = None
         try:
@@ -115,3 +129,12 @@ def forgot():
         else:
             flash(error)
     return render_template("auth/forgot.html")
+
+@bp.route("/verifyEmail", methods=("GET", "POST"))
+def verify(email=None, password=None):
+    if request.method == "POST":
+        email = request.form.get("email")
+        firebase.auth.send_email_verification(session["user_token"])
+        session.clear()
+        return render_template("auth/login.html")
+    return render_template("auth/verify.html")

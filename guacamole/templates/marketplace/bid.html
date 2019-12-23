@@ -21,30 +21,111 @@
     } );
     </script>
   </head>
-  <h1>{% block title %} "{{ post['title'] }}"{% endblock %}</h1> 
+  <h1>{% block title %}Bid on "{{ post.val()['title'] }}"{% endblock %}</h1> 
 {% endblock %}
 
-{% block content %}
-  <div>
-      <div class="about">by {{ post['username'] }} on {{ post['created'].strftime('%Y-%m-%d') }} at {{ post['created'].strftime('%H:%M') }}</div>
-      <p class="body">{{ post['body'] }}</p>
-      <div class="about">Tags: (tags einfügen) <br> Budget: {{ post['budget'] }}$ <br> Payment: {{ post['payment'] }} <br> Deadline in <span id="timeLeft"></span></div>
+{% block left %}
+<div class="shadow-sm card" style="width: 100%; margin-bottom: 10px" id="post{{ post.key() }}">
+  <div class="card-body">
+    <div class="row card-title" style="width: 100%">
+      <div class="col-sm-9"> <h5>{{ post.val()['title'] }}</h5></div>
+        <div class="col-sm-3">
+          <h5>
+            <span class="pull-right">
+              <i class="fas fa-dollar-sign"></i> 
+              {{post.val()["budget"]}}
+            </span>
+          </h5>
+        </div>
+    </div>
+    <a href="/marketplace/user/{{post.val()['author']}}">@{{post.val()['author_user']}}</a> · {{ utcFromTimestamp(post.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(post.val()['timestamp']).strftime('%H:%M') }}
+    <hr>
+    <p class="card-text">{{ post.val()['body'] }}.</p>
   </div>
+  <ul class="list-group list-group-flush">
+    <hr>
+    <li class="list-group-item"><script>document.write(getCountdown("{{ post.val()['deadline'] }}"))</script> until deadline</li>
+  </ul>
+  <div class="card-body">
+      {% if g.user %}
+      <span class="btn-group"></span>
+        <button class="btn btn-primary shadow-none" type="button" data-toggle="collapse" data-target="#askFAQ{{ post.key() }}" aria-expanded="false" aria-controls="collapseExample">
+          FAQ
+        </button>
+        <div style="margin-top: 10px" class="collapse" id="askFAQ{{ post.key() }}">
+          <div class="accordion" id="accordionExample">
+              <div class="card">
+                <ul class="list-group list-group-flush">
+                  {% if post.val()['faq'] is defined %}
+                    {% set faqs = post.val()['faq'] %}
+                    {% if faqs.keys()|length == 0 %}
+                      <li class="list-group-item">
+                        No Questions Answered
+                      </li>
+                    {% endif %}
+                    {% for faqKey in faqs.keys() %}
+                      {% set faq = faqs[faqKey] %}
+                      <li class="list-group-item">
+                        <button style="width: 100%" class="btn shadow-none collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ{{ faqKey }}" aria-expanded="false" aria-controls="collapseFAQ{{ faqKey }}">
+                          <div class="float-left"><h5>{{ faq['question'] }} ?</h5></div>
+                          <div class="float-right"><i class="fas fa-chevron-down"> </i></div>
+                        </button>
+                        <div id="collapseFAQ{{ faqKey }}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                          <hr>
+                          {{ faq['answer'] }}
+                        </div> 
+                      </li>
+                    {% endfor %}
+                  {% else %}
+                  <li class="list-group-item">
+                    No Questions Answered
+                  </li>
+                  {% endif %}
+                  <li class="list-group-item">
+                    <a style="width: 100%" class="btn btn-dark" href="{{ url_for('marketplace.askFAQ', id=post.key()) }}">Ask a question</a>
+                  </li>
+                </ul>
+              </div>
+          </div>
+        </div>
+    </span>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block content %}
   <hr>
   <div>
-      <form method="post">
-          <label for="Price">Price</label>
-          <input name="price" id="price" type="number"  value="{{ request.form['price'] }}" min=0 max="{{ post['budget'] }}" required>
+    <form method="post">
+      <div class="form-group">
+        <label for="deadline">Delivery</label>
+        <input class="form-control" name="delivery" id="delivery" value="{{ request.form['delivery'] }}" required>
+      </div>
       
-          <label for="delivery">Delivery</label>
-          <input name="delivery" id="datepicker" value="{{ request.form['delivery'] }}" required readonly>
+      <div class="row">
+        <div class="col">
+          <label for="price">Price</label>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">$</span>
+            </div>
+            <input type="number" class="form-control" name="price" id="price" value=1 min=1 max="post.val()['budget']" placeholder="10" required>
+            <div class="input-group-append">
+              <span class="input-group-text">.00</span>
+            </div>
+            </div>
+        </div>
+        <div class="col">
+          <label for="payment">Forms of Payment</label>
+          <input type="text" class="form-control" name="payment" id="payment" placeholder="PayPal, Venmo, etc" required>
+        </div>
+      </div>
       
-          <label for="payment">Payment</label>
-          <input name="payment" id="payment" value="{{ request.form['payment'] }}" required>
-      
-          <label for="body">Description</label>
-          <textarea name="body" id="body" required>{{ request.form['body'] }} </textarea>
-          <input type="submit" value="Save">
-        </form>
+      <div class="form-group">
+        <label for="body">Description</label>
+        <textarea class="form-control" rows="5" id="body" placeholder="Describe what you need" name="body" required></textarea>
+  
+      <div class="text-center"> <button type="submit" class="btn btn-primary">Bid</button> </div>
+    </form>
   </div>
 {% endblock %}

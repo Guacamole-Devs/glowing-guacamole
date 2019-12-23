@@ -26,7 +26,7 @@
         <header>
             <div>
                 <h1>{{ bid.val()['title'] }}</h1>
-                <div class="about">by {{ g.user['displayName'] }} on {{ utcFromTimestamp(bid.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(bid.val()['timestamp']).strftime('%H:%M') }}</div>
+                <div class="about">by {{ g.user.username }} on {{ utcFromTimestamp(bid.val()['timestamp']).strftime('%Y-%m-%d')  }} at {{ utcFromTimestamp(bid.val()['timestamp']).strftime('%H:%M') }}</div>
             </div>
         </header>
         <p class="body">{{ bid.val()['body'] }}</p>

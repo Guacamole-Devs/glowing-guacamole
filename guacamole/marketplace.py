@@ -28,7 +28,6 @@ def index():
         deadlineDate = datetime.strptime(deadline, "%Y-%m-%d")
         if not datetime.utcnow() > deadlineDate:
             filteredPosts.append(post)
-        
     return render_template("marketplace/index.html", posts=filteredPosts, utcFromTimestamp=datetime.utcfromtimestamp)
 
 
@@ -63,7 +62,8 @@ def create():
                 "budget":budget,
                 "payment":payment,
                 "body": body,
-                "author": g.user["localId"],
+                "author": g.user.localId,
+                "author_user": g.user.username,
                 "timestamp": unixtime
             }
             firebase.db.child("marketplace").child("posts").push(post)
@@ -140,7 +140,7 @@ def bid(id):
             "delivery":delivery,
             "payment":payment,
             "body": body,
-            "author": g.user["localId"],
+            "author": g.user.localId,
             "timestamp": unixtime
         }
         firebase.db.child("marketplace").child("bids").push(bid)
@@ -149,6 +149,7 @@ def bid(id):
     return render_template("marketplace/bid.html", post=post, utcFromTimestamp=datetime.utcfromtimestamp)
 
 @bp.route("/<string:id>/askFAQ", methods=("GET", "POST"))
+@login_required
 def askFAQ(id):
     post = firebase.db.child("marketplace").child("posts").child(id).get()
     if request.method == "POST":
@@ -171,8 +172,16 @@ def askFAQ(id):
             "id" : id 
         }
         firebase.db.child("users").child("followed").push(post)
-        flush("FAQ Submitted")
+        flash("FAQ Submitted")
         return redirect(url_for("marketplace.index"))
     from datetime import datetime
     return redirect(url_for("marketplace.index"))
 
+
+@bp.route("/user/<string:id>", methods=("GET", "POST"))
+@login_required
+def userProfile(id):
+    theirProfile = firebase.db.child("users").child(id).get()
+    theirPosts = firebase.db.child("marketplace").child("posts").order_by_child("author").equal_to(id).get()
+    from datetime import datetime
+    return render_template("profile/profile.html", user=id, profile=theirProfile, posts=theirPosts, utcFromTimestamp=datetime.utcfromtimestamp)
