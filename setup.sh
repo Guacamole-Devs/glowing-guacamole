@@ -6,11 +6,11 @@ then
 fi
 . venv/bin/activate
 export FLASK_APP=guacamole
-export FLASK_ENV=development
+#export FLASK_ENV=development
 
 if [ "$1" = "ip" ]
 then
     flask run --host=$2
 else
-    flask run
+    flask run --no-reload
 fi

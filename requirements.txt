@@ -1,4 +1,0 @@
-flask
-pyrebase4
-werkzeug
-pyrebase

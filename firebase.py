@@ -1,14 +1,11 @@
 import pyrebase
-import os
-import json
 
-config = eval(os.getenv("firebase"))
-config["serviceAccount"] = json.loads(os.getenv("serviceAccount"))
+config = eval(open("cred.txt").read())
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
 
- 
+
 
 
 import requests
