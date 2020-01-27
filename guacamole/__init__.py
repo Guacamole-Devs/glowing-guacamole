@@ -18,8 +18,9 @@ def create_app(test_config=None):
 
 
     # apply the blueprints to the app
-    from guacamole import auth, marketplace, me, messaging_system
+    from guacamole import api, auth, marketplace, me, messaging_system
 
+    app.register_blueprint(api.bp)
     app.register_blueprint(messaging_system.bp)
     app.register_blueprint(auth.bp)
     app.register_blueprint(marketplace.bp)

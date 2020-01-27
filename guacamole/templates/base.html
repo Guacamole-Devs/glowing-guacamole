@@ -1,150 +1,176 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="https://kit.fontawesome.com/7eaafe9159.js" crossorigin="anonymous"></script>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="/static/css/countdown.css">
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <script src="https://kit.fontawesome.com/7eaafe9159.js" crossorigin="anonymous" ></script>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="/static/css/countdown.css" />
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script 
+            src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+            crossorigin="anonymous">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-    
-    <script>
-      $(document).ready(function() {
-      
-        var docHeight = $(window).height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-    
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 10+ (docHeight - footerTop) + 'px');
-      });
-      $( '#topheader .navbar-nav a' ).on( 'click', function () {
-        $( '#topheader .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
-        $( this ).parent( 'li' ).addClass( 'active' );
-      });
-    </script>
-    <!-- JS: Deadline Countdown -->
-    <script>
-      function getCountdown(date) {
-        var deadline = new Date(date);
-        var today =  new Date(Date.now());
-        var modulo = 12 % 9
-        var Difference_In_Minutes = parseInt(deadline.getTime()-today.getTime())/(60*1000);
-        var days = parseInt(Difference_In_Minutes / (60*24));
-        var hours = parseInt((Difference_In_Minutes % (60*24)) / 60);
-        var minutes = parseInt((Difference_In_Minutes % (60*24)) % 60);
-        return [('0' + days).slice(-2), ('0' + hours).slice(-2), ('0' + minutes).slice(-2)]
-      }
-      function getCountdownDays(date) {
-        values = getCountdown(date)
-        return values[0]
-      }
-      function getCountdownHours(date) {
-        values = getCountdown(date)
-        return values[1]
-      }
-      function getCountdownMins(date) {
-        values = getCountdown(date)
-        return values[2]
-      }
-    </script>
+        <!-- TEMPLATES -->
+        <!-- <link rel="prefetch" href="/static/html/post_template.html" id="post_template"> -->
+        
+        <!---->
 
-    <!---->
-
-    <title>{% block title %}{% endblock %} - guacamole</title>
-  </head>
+        <!-- INTERN SCRIPTS -->
+        <script src="/static/js/Countdown.js"></script> <!-- Countdown Formatter-->
+        <script src="/static/js/makePostList.js"></script> <!-- Convert API Responmse to postlist -->
+        <!---->
+        <title>{% block title %}{% endblock %} - guacamole</title>
+    </head>
 
   <body>
     <div id="topheader">
-      <nav class="shadow-sm p-3 mb-2 navbar navbar-expand-lg navbar-light bg-white">
+      <nav
+        class="shadow-sm p-3 mb-2 navbar navbar-expand-lg navbar-light bg-white"
+      >
         <a class="navbar-brand" href="/">GUACAMOLE</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
-      
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             {% if g.user %}
             <li class="nav-item active">
-              <a class="nav-link" href="/marketplace">Marketplace <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="/marketplace"
+                >Marketplace <span class="sr-only">(current)</span></a
+              >
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/me/dashboard">Dashboard</a>
-              </li>
+              <a class="nav-link" href="/me/dashboard">Dashboard</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link" href="/me/orders">Orders</a>
             </li>
             {% endif %}
           </ul>
           {% if g.user %}
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fas fa-user"></i> {% if g.user.username %} {{ g.user.username }} {% else %} Account {% endif %}
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="/me"> Profile </a>
-                <a class="dropdown-item" href="/me/posts"> My Posts </a>
-                <a class="dropdown-item" href="/me/bids"> My Bids </a>
-                <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Log Out</a>
-              </div>
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdownMenuLink"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i class="fas fa-user"></i> {% if g.user.username %} {{
+            g.user.username }} {% else %} Account {% endif %}
+          </a>
+          <div
+            class="dropdown-menu dropdown-menu-right"
+            aria-labelledby="navbarDropdownMenuLink"
+          >
+            <a class="dropdown-item" href="/me"> Profile </a>
+            <a class="dropdown-item" href="/me/posts"> My Posts </a>
+            <a class="dropdown-item" href="/me/bids"> My Bids </a>
+            <a class="dropdown-item" href="{{ url_for('auth.logout') }}"
+              >Log Out</a
+            >
+          </div>
           {% else %}
-            <div class="d-none d-lg-block d-xl-block">
-              <div class="navbar-form">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Login</button>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <form action="/auth/login" method="post" class="px-4 py-3">
-                    <div class="form-group">
-                      <label for="email">Email address</label>
-                      <input class="form-control" type="email" placeholder="email@example.com" id="email" name="email" id="email" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="password">Password</label>
-                      <input class="form-control" type="password" placeholder="Enter Password" id="password" name="password" id="password" required>
-                    </div>
-                    <input type="submit" class="btn btn-primary" value="Log In">
-                  </form>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="/auth/forgot">Did you forget something?</a>
-                </div>
-                <a class="btn btn-secondary" href="{{ url_for('auth.register') }}">Register</a>
+          <div class="d-none d-lg-block d-xl-block">
+            <div class="navbar-form">
+              <button
+                type="button"
+                class="btn btn-primary dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Login
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <form action="/auth/login" method="post" class="px-4 py-3">
+                  <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input
+                      class="form-control"
+                      type="email"
+                      placeholder="email@example.com"
+                      id="email"
+                      name="email"
+                      id="email"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                      class="form-control"
+                      type="password"
+                      placeholder="Enter Password"
+                      id="password"
+                      name="password"
+                      id="password"
+                      required
+                    />
+                  </div>
+                  <input type="submit" class="btn btn-primary" value="Log In" />
+                </form>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/auth/forgot"
+                  >Did you forget something?</a
+                >
               </div>
+              <a class="btn btn-secondary" href="{{ url_for('auth.register') }}"
+                >Register</a
+              >
             </div>
+          </div>
 
-            <div class="d-lg-none d-xl-none">
-              <div class="navbar-form">
-                <a  class="btn btn-primary" href="{{ url_for('auth.login') }}">Login</a>
-                <a class="btn btn-secondary" href="{{ url_for('auth.register') }}">Register</a>
-              </div>
+          <div class="d-lg-none d-xl-none">
+            <div class="navbar-form">
+              <a class="btn btn-primary" href="{{ url_for('auth.login') }}"
+                >Login</a
+              >
+              <a class="btn btn-secondary" href="{{ url_for('auth.register') }}"
+                >Register</a
+              >
             </div>
+          </div>
           {% endif %}
         </div>
       </nav>
     </div>
-    
+
     <section class="container-fluid">
       <header>
         <div class="text-center">{% block header %}{% endblock %}</div>
       </header>
       {% for message in get_flashed_messages() %}
-        <div class="alert alert-primary" role="alert"> {{ message }} </div>
+      <div class="alert alert-primary" role="alert">{{ message }}</div>
       {% endfor %}
       <div class="container-fluid">
         <div class="row">
-          <div  class="col-md-3"> {% block left %}{% endblock %} </div>
-          <div class="col-md-6"> {% block content %}{% endblock %} </div>
-          <div  class="col-md-3"> {% block right %}{% endblock %} </div>
+          <div class="col-md-3">{% block left %}{% endblock %}</div>
+          <div class="col-md-6">{% block content %}{% endblock %}</div>
+          <div class="col-md-3">{% block right %}{% endblock %}</div>
         </div>
       </div>
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-4"> {% block secLeft %}{% endblock %} </div>
-          <div class="col-md-8"> {% block secContent %}{% endblock %} </div>
+          <div class="col-md-4">{% block secLeft %}{% endblock %}</div>
+          <div class="col-md-8">{% block secContent %}{% endblock %}</div>
         </div>
       </div>
       <div class="contailer-fluid">
@@ -154,19 +180,15 @@
   </body>
 </html>
 
-
 {% block footer %}
 <!-- Footer -->
 <footer class="page-footer font-small blue pt-4">
-
-
-
   <!-- Copyright -->
-  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+  <div class="footer-copyright text-center py-3">
+    © 2020 Copyright:
     <a href="https://mdbootstrap.com/education/bootstrap/"> guacamole</a>
   </div>
   <!-- Copyright -->
-
 </footer>
 <!-- Footer -->
 {% endblock %}
