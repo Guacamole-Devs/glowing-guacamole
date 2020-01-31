@@ -2,7 +2,8 @@
 if [ ! -d "venv" ];
 then
     python3 -m venv venv
-    pip3 install flask pyrebase4
+    pip3 install flask
+    pip3 install pyrebase4
 fi
 . venv/bin/activate
 export FLASK_APP=guacamole
