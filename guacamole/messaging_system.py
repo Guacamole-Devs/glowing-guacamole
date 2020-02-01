@@ -26,13 +26,17 @@ def send_message(message, room):
 
 @bp.route("/send/<room>")
 def sendroom(room):
+    from datetime import datetime
+
     messages = firebase.db.child("messaging_system").child(room).get()
     listofmessagesasstring = []
     try:
         for message in messages.each():
-            listofmessagesasstring.append(message.get("message"))
+            listofmessagesasstring.append(message.val())
+    except:
+        pass
     print(listofmessagesasstring)
-    return render_template("messaging_system/chat.html", listofmessagesasstring= listofmessagesasstring, room = room)
+    return render_template("messaging_system/chat.html", utcFromTimestamp=datetime.utcfromtimestamp, listofmessagesasstring= listofmessagesasstring, room = room)
 
 @socketio.on("join")
 def join(room):
