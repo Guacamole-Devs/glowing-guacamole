@@ -2,16 +2,16 @@
 if [ ! -d "venv" ];
 then
     python3 -m venv venv
-    pip3 install flask
-    pip3 install pyrebase4
+    pip3 install flask pyrebase4 flask-socketio
+
 fi
 . venv/bin/activate
 export FLASK_APP=guacamole
-export FLASK_ENV=development
+#export FLASK_ENV=development
 
 if [ "$1" = "ip" ]
 then
     flask run --host=$2
 else
-    flask run
+    flask run --no-reload
 fi

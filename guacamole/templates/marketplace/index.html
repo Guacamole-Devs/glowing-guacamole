@@ -3,7 +3,9 @@
 {% block title %}Marketplace{% endblock %}
 
 {% block header %}
+
 <meta id="user_id" content="{{g.user.localId}}">
+
 <div class="row">
   <div class="col">
     <h2>Marketplace</h2>
@@ -17,6 +19,7 @@
     </div>
   </div>
 </div>
+
 
 <template id="post_template">
     <div class="shadow-sm card" style="width: 100%; margin-bottom: 10px" id="post_id">
@@ -120,6 +123,10 @@
     
     window.onload = getPosts;
 </script>
+
+  <!-- SEARCH BAR -->
+  <!---->
+
 {% endblock %}
 
 
@@ -147,4 +154,5 @@
 {% endblock %}
 {% block content %}
     <div id='post_list'></div>
+
 {% endblock %}
