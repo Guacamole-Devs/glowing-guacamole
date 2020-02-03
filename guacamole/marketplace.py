@@ -149,7 +149,7 @@ def bid(id):
             "payment": payment,
             "body": body,
             "author": g.user.localId,
-            "timestamp": unixtime,
+            "timestamp": unixtime
         }
         firebase.db.child("marketplace").child("bids").push(bid)
         return redirect(url_for("marketplace.index"))

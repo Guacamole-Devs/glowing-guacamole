@@ -3,9 +3,7 @@
 {% block title %}Marketplace{% endblock %}
 
 {% block header %}
-
 <meta id="user_id" content="{{g.user.localId}}">
-
 <div class="row">
   <div class="col">
     <h2>Marketplace</h2>
@@ -19,7 +17,6 @@
     </div>
   </div>
 </div>
-
 
 <template id="post_template">
     <div class="shadow-sm card" style="width: 100%; margin-bottom: 10px" id="post_id">
@@ -82,8 +79,6 @@
 <script>
     function getPosts() {
         var sorting = document.getElementById("sortingOption").value;;
-        var showInactive = (document.getElementById("showInactiveSwitch").checked == false);
-        console.log(showInactive);
         if (document.getElementById("sortingOption").value != null) {
             document.getElementById("sortingOption").value;
         }
@@ -99,12 +94,12 @@
                 break;
         }
         const data = {
-            "onlyActive": showInactive,
+            "onlyActive": true,
             "sortedBy": sorting,
             "query": null
         }
         fetch('/api/posts', {
-            method: 'POST',
+            method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -123,36 +118,31 @@
     
     window.onload = getPosts;
 </script>
-
-  <!-- SEARCH BAR -->
-  <!---->
-
 {% endblock %}
 
 
 
 {% block left %}
 <div class="shadow-sm card" style="width: 100%;">
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-            <div class="form-group">
-                <label for="sortingOption">Sort by</label>
-                <select class="browser-default custom-select" id="sortingOption" onchange="getPosts()">
-                    <option>most recent</option>
-                    <option>deadline</option>
-                    <option>reward</option>
-                </select>
-            </div>
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="showInactiveSwitch" onchange="getPosts()">
-                <label class="custom-control-label" for="showInactiveSwitch">Show inactive posts</label>
-            </div>
-        </li>
-        <li class="list-group-item"><a href="#post-Lw3w5okTivrfPkFnN67"> jump </a></li>
-    </ul>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+        <div class="form-group">
+            <label for="sortingOption">Sort by</label>
+            <select class="browser-default custom-select" id="sortingOption" onchange="getPosts()">
+              <option>most recent</option>
+              <option>deadline</option>
+              <option>reward</option>
+            </select>
+          </div>
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="showInactiveSwitch" >
+          <label class="custom-control-label" for="showInactiveSwitch">Show inactive posts</label>
+        </div>
+    </li>
+    <li class="list-group-item"><a href="#post-Lw3w5okTivrfPkFnN67"> jump </a></li>
+  </ul>
 </div>
 {% endblock %}
 {% block content %}
     <div id='post_list'></div>
-
 {% endblock %}
