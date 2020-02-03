@@ -2,7 +2,7 @@
 <html>
   <head>
 
-    <title>Socket.IO chat</title>
+    <title>chat</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -12,6 +12,8 @@
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
+      #messagessender li { padding: 5px 10px; ; text-allign: right;}
+      #messagessender li:nth-child(odd) { background: #eee; ; text-allign: right;}
     </style>
   </head>
   
@@ -25,8 +27,13 @@
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
 {% for message in listofmessagesasstring %}
-$('#messages').append($('<li>').text("{{ message.get("message") }}"));
+{% if message.get("sender") == g.user.localId %}
+$('#message').append($('<li>').text("{{ message.get("message") }}  {{ message.get("sender") }}  {{ message.get("timestamp") }}"));
+{% else %}
+$('#messages').append($('<li>').text("{{ message.get("message") }}  {{ message.get("sender") }} {{ message.get("timestamp") }}"));
+{% endif %}
 {% endfor %}
+
   $(function () {
     var socket = io();
     $('form').submit(function(e){
