@@ -1,0 +1,57 @@
+<template id="post_template">
+    <div class="shadow-sm card" style="width: 100%; margin-bottom: 10px" id="post_id">
+        <div class="card-body">
+            <div class="row card-title" style="width: 100%">
+                <div class="col-sm-9"> 
+                    <h5 id="post_title">TITLE</h5>
+                </div>
+                <div class="col-sm-3">
+                    <h5>
+                        <span class="pull-right">
+                        <i class="fas fa-dollar-sign"></i> 
+                        <span id="post_budget">BUDGET</span>
+                        </span>
+                    </h5>
+                </div>
+            </div>
+            <a href="" id=post_user></a>
+            <span id=post_date></span>
+            <hr>
+            <p class="card-text" id="post_body">BODY</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <hr>
+            <li class="list-group-item">
+              <div class="d-flex justify-content-center">
+                  <div class="m-1 flex-column justify-content-center">
+                    <div class="text-center countdown-number" id="post_deadline_days">
+                      
+                    </div>
+                    <div class="countdown-text">days</div>
+                  </div>
+                  <div class="m-1 flex-column justify-content-center">
+                    <div class="text-center countdown-number" id="post_deadline_hours">
+                    </div>
+                    <div class="countdown-text">hours</div>
+                  </div>
+                  <div class="m-1 flex-column justify-content-center">
+                    <div class="text-center countdown-number" id="post_deadline_minutes">
+                    </div>
+                    <div class="countdown-text">mins</div>
+                  </div>
+                  
+              </div>
+            </li>
+        </ul>
+        <div class="card-body">
+            {% if g.user %}
+                <span class="btn-group"></span>
+                    <button class="btn btn-primary shadow-none" type="button" data-toggle="collapse" data-target="#askFAQ" aria-expanded="false" aria-controls="collapseExample">
+                        FAQ
+                    </button>
+                    <a class="btn btn-secondary" href="" id="post_btn_action">ACTION</a></button>
+                </span>
+            {% endif %}
+        </div>
+    </div>
+</template>

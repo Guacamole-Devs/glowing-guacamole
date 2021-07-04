@@ -1,4 +1,5 @@
 venv/
+.env
 *.pyc
 __pycache__/
 instance/
@@ -17,3 +18,4 @@ cred.txt
 .vscode/settings.json
 serviceAccountKey.json.json
 serviceAccountCredentials.json
+.vscode/settings.json

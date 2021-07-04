@@ -5,9 +5,6 @@ firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
 
-
-
-
 import requests
 import json
 

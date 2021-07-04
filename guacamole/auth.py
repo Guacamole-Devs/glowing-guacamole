@@ -11,7 +11,7 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
-
+ 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 def login_required(view):
     """View decorator that redirects anonymous users to the login page."""
